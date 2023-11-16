@@ -1,0 +1,374 @@
+﻿
+@{
+    ViewBag.Title = Session["NAME"];
+    Layout = "~/Views/Shared/_LayoutProgram.cshtml";
+}
+
+<link href="~/Assets/css/styles.css" rel="stylesheet" />
+<style>
+    .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #096022;
+        opacity: 1;
+        transition: opacity 0.3s ease;
+        pointer-events: none;
+    }
+    #bg {
+        font-family: Nestle_btn;
+        padding: 0;
+    }
+    .btn-run {
+        font-family: Nestle_btn;
+        margin: 10px 30px 0px 30px;
+        font-size: 36px;
+        border: 6px solid;
+        padding: 5px 24px;
+        width: 262px;
+    }
+    /*@@font-face {
+        font-family: NestleFont;
+        src: url(../Fonts/AMPLE-SOFT-BOLD.ttf);
+    }*/
+    @@font-face {
+        font-family: Nestle_note;
+        src: url(/Assets/Fonts/NestleBrush-Regular.ttf)
+    }
+    @@font-face{
+    font-family:Nestle_numb;
+    src:url(../Fonts/RightGrotesk-Bold.otf)
+}
+    @@font-face {
+        font-family: 'Nestle_btn';
+        src: url(/Assets/Fonts/Nestle_font/000BlahBlahUCiCiel-Regular.ttf),
+            url(/Assets/Fonts/Nestle_font/000BlahBlahUCiCiel-Bold.ttf),
+            url(/Assets/Fonts/Nestle_font/000BlahBlahUCiCiel-BoldItalic.ttf),
+            url(/Assets/Fonts/Nestle_font/000BlahBlahUCiCiel-Italic.ttf)
+    }
+
+    .square {
+        /*    min-height: 120px;
+        min-width: 120px;
+        font-size: 84px;*/
+        font-family: Nestle_btn;
+        position: relative;
+        overflow: hidden;
+    }
+   /* .input-group {
+        display:flex;
+        justify-content:center;
+        padding:5px
+    }
+    fieldset{
+        padding:0;
+    }*/
+    #congrate {
+        /* display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: unset;
+        background-size: contain;
+        background-repeat: no-repeat;*/
+        background-image: url(/Assets/img/nen_thongbao.png);
+        padding: 35px 70px 70px 70px;
+        font-style: unset;
+        font-family: Nestle_note;
+    }
+   #congrate p{
+       font-size:52px
+   }
+    /*.modal-content-congrate {
+        width: 50%;
+        padding-top:0
+    }*/
+    .btn-text{
+        margin:0;
+    }
+    #IDDETAIL {
+        font-weight: normal;
+        font-size: 22px;
+    }
+</style>
+<audio id="drawAudio">
+    <source src="~/Assets/img/spin.mp3" type="audio/mp3">
+    sound quay so
+</audio>
+<audio id="congraAudio">
+    <source src="~/Assets/img/phaohoa.mp3" type="audio/mp3">
+    sound congratulation
+</audio>
+<div id="phaohoa" class="pyro"><div class="before"></div><div class="after"></div></div>
+<div style="display: grid;">
+    <!--title-->
+    <div id="logoImage">
+        <img id="logo" />
+    </div>
+    <div class="container_title">
+        @*<div id="titlename" class="title">
+                <abbr id="titlecampaign" title="Nhấp để thay đổi" onclick="showhideTitle()">
+                    @Session["NAME"]
+                </abbr>
+            </div>*@
+
+        @*  <div id="titlename" class="title">    @Session["NAME"]</div>*@
+
+    </div>
+    <!--number-->
+    <div class="number" style=" padding-top: 220px ">
+        <div class="box1" style="height: fit-content;">
+            <div style="flex-wrap: nowrap;display: flex; justify-content:center">
+
+                <button class="square" id="0">
+                    <p class="btn-text" id="text0"></p>
+                    <div id="overlaybtn0" class="overlay" style="opacity:0"></div>
+
+                </button>
+                <button class="square" id="1">
+                    <p class="btn-text" id="text1"></p>
+                    <div id="overlaybtn1" class="overlay" style="opacity:0"></div>
+                </button>
+                <button class="square" id="2">
+                    <p class="btn-text" id="text2"></p>
+
+                    <div id="overlaybtn2" class="overlay" style="opacity:0"></div>
+                </button>
+                <button class="square" id="3">
+                    <p class="btn-text" id="text3"></p>
+
+                    <div id="overlaybtn3" class="overlay" style="opacity:0"></div>
+                </button>
+                <button class="square" id="4">
+                    <p class="btn-text" id="text4"></p>
+
+                    <div id="overlaybtn4" class="overlay" style="opacity:0"></div>
+                </button>
+                <button class="square" id="5">
+                    <p class="btn-text" id="text5"></p>
+
+                    <div id="overlaybtn5" class="overlay" style="opacity:0"></div>
+                </button>
+                <button class="square" id="6">
+                    <p class="btn-text" id="text6"></p>
+
+                    <div id="overlaybtn6" class="overlay" style="opacity:0"></div>
+                </button>
+                <button class="square" id="7">
+                    <p class="btn-text" id="text7"></p>
+
+                    <div id="overlaybtn7" class="overlay" style="opacity:0"></div>
+                </button>
+            </div>
+        </div>
+    </div>
+    <!--status-->
+    <div class="flex_center" style="display:flex;justify-content:center">
+        <div class="box1" style="text-align:center">
+            <p id="status" onclick="showhide_input()">
+                Tìm người đoạt giải ....
+            </p>
+            @if (Session["check"] == null)
+            {<div class="input-group">
+
+                    <p>Chưa có giải thưởng . Hãy <a href="/Campaign/Details/@Session["IDCAMPAIGN"]">thêm giải</a> vào chương trình</p>
+                </div>
+            }
+            else {
+        <div style="display:flex;justify-content:center">
+            @{ Html.RenderAction("SelectPrizeCamp", "Campaign_Detail");}
+            <button id="startDraw" class="btn-run" onclick="startDraw8()">QUAY</button>
+            <button id="submit" class="btn-run" style="display: none" onclick="draw8()">Dừng</button>
+            <button id="btnstop" class="btn-run" style="display: none" onclick="draw8special()">Dừng</button>
+            <button id="myBtn" class="btn-run" onclick="Export()"style="font-weight: normal; font-size: 22px; ">KẾT QUẢ</button>
+
+        </div>
+                    }
+        </div>
+
+    </div>
+    <!-- The Modal -->
+
+    <div id="myModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div>
+                <span class="close">&times;</span>
+            </div>
+            <table class="table" id="table2excel">
+                <thead>
+                    <tr>
+                        <th scope="col">Giải</th>
+                        <th scope="col">Tên</th>
+                        <th>SĐT</th>
+                        <th>Ngày đoạt giải</th>
+                    </tr>
+                </thead>
+                <tbody id="result">
+                    <!-- <tr></tr> -->
+                </tbody>
+
+            </table>
+            <button style="padding: 5px 15px; color: white; font-size: 12px; border: 5px solid transparent; background-color: darkblue; border-radius: 5px " onclick="ExportExcel()">
+                Xuất File Excel
+
+            </button>
+        </div>
+    </div>
+    
+</div>
+<div class="container " style="display:flex;justify-content:center;padding-top:15px;flex-direction:column"  >
+    <div>
+        <p style="color:transparent;text-align:center"onclick="btnspecial()">special</p>
+    </div>
+    <div class="prize_mobile" style="display:flex;justify-content:center">
+        <iframe id="iddetail" height="350" width="550" title="Iframe Example" style="border:none">
+        </iframe>
+    </div>
+</div>
+<div id="modal-congrate" class="modal">
+    <div class="modal-content-congrate">
+        <div id="congrate" style="padding-top: 90px;">
+        </div>
+    </div>
+</div>
+<div>
+    @*@{ Html.RenderAction("listJoiners", "Campaign"); }*@
+</div>
+
+<div style="display:none">
+    <input value="@Session["BACKGROUND"]" id="BACKGROUND"></>
+    <input value="@Session["COLORBG"]" id="COLORBG"></>
+    <input value="@Session["COLORTEXT"]" id="COLORTEXT"></>
+    <input value="@Session["COLORBTN_BG"]" id="COLORBTN_BG"></>
+    <input value="@Session["COLORBTN_TEXT"]" id="COLORBTN_TEXT"></>
+    <input value="@Session["LOGO"]" id="LOGO"></>
+    <input value="@Session["NAME"]" id="nameCamp"></>
+    <input value="@Session["NAMECUS"]" id="nameCus"></>
+
+</div>
+<script src="~/Assets/js/Script.js"></script>
+<script>
+    //const overlaybtn0 = document.getElementById("overlaybtn0");
+    //const overlaybtn1 = document.getElementById("overlaybtn1");
+    //const overlaybtn2 = document.getElementById("overlaybtn2");
+    //const overlaybtn3 = document.getElementById("overlaybtn3");
+    //const overlaybtn4 = document.getElementById("overlaybtn4");
+    //const overlaybtn5 = document.getElementById("overlaybtn5");
+    //const overlaybtn6 = document.getElementById("overlaybtn6");
+    //const overlaybtn7 = document.getElementById("overlaybtn7");
+
+    
+
+    //--------------------Giao dien ->
+    const bg = document.getElementById("bg");
+    const logo = document.getElementById("logo");
+    const btnrun = document.getElementById("myBtn").style;
+    const BACKGROUND = document.getElementById("BACKGROUND").value;
+    const submitbtn = document.getElementById("submit");
+    const COLORBG = document.getElementById("COLORBG").value;
+    const COLORTEXT = document.getElementById("COLORTEXT").value;
+    const COLORBTN_BG = document.getElementById("COLORBTN_BG").value;
+    const COLORBTN_TEXT = document.getElementById("COLORBTN_TEXT").value;
+    const LOGO = document.getElementById("LOGO").value;
+    if (LOGO == "/Assets/img/preeco.png") {
+        logo.style.display = "none";
+    }
+    else {
+        logo.src = LOGO;
+    }
+
+    bg.style.backgroundImage = 'url(' + BACKGROUND + ')';
+    btnrun.color = COLORBTN_TEXT; btnrun.backgroundColor = COLORBTN_BG;
+    const btnselect = document.getElementById("IDDETAIL").style;
+    btnselect.color = COLORBTN_TEXT; btnselect.backgroundColor = COLORBTN_BG;
+
+    const startdrawbtn = document.getElementById("startDraw").style;
+    startdrawbtn.color = COLORBTN_TEXT; startdrawbtn.backgroundColor = COLORBTN_BG;
+    submitbtn.value.color = COLORBTN_TEXT; submitbtn.value.backgroundColor = COLORBTN_BG;
+    const square0 = document.getElementById("0").style;
+    const square1 = document.getElementById("1").style;
+    const square2 = document.getElementById("2").style;
+    const square3 = document.getElementById("3").style;
+    const square4 = document.getElementById("4").style;
+    const square5 = document.getElementById("5").style;
+    const square6 = document.getElementById("6").style;
+    const square7 = document.getElementById("7").style;
+    square0.color = COLORTEXT; square0.backgroundColor = COLORBG;
+    square1.color = COLORTEXT; square1.backgroundColor = COLORBG;
+    square2.color = COLORTEXT; square2.backgroundColor = COLORBG;
+    square3.color = COLORTEXT; square3.backgroundColor = COLORBG;
+    square4.color = COLORTEXT; square4.backgroundColor = COLORBG;
+    square5.color = COLORTEXT; square5.backgroundColor = COLORBG;
+    square6.color = COLORTEXT; square6.backgroundColor = COLORBG;
+    square7.color = COLORTEXT; square7.backgroundColor = COLORBG;
+    function chosse() {
+        var imgprize = document.getElementById("iddetail");
+        var IDitemprize = $("#IDDETAIL option:selected").val();
+        if (IDitemprize == "") {
+            imgprize.style.display = "none";
+            imgprize.src = "/Campaign_Detail/ViewDefaultSelect";
+        }
+
+        imgprize.style.display = "block";
+        imgprize.src = "/Campaign_detail/Detail/" + IDitemprize;
+
+    }
+    function saveWinner() {
+        var winners = new Array();
+        $("#table2excel tbody tr").each(function () {
+            var row = $(this);
+            var winner = {};
+            winner.NAME = row.find("TD").eq(1).html();
+            winner.PHONE = row.find("TD").eq(2).html();
+            winner.WINDATE = row.find("TD").eq(3).html();
+            winner.IDDETAIL = row.find("TD").eq(4).html();
+            winners.push(winner);
+        });
+        $.ajax({
+            type: "POST",
+            url: '/Winner/UpdateWinner',
+            data: JSON.stringify(winners),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (r) {
+                alert("Đã lưu thông tin vào database");
+            },
+            error: function (r) {
+                alert("Đã lưu thông tin vào database..");
+            }
+        });
+    };
+    function showhide_input() {
+        var iddetail = document.getElementById("IDDETAIL");
+        var btn_kq = document.getElementById("myBtn");
+
+        if (btn_kq.style.display == "none") {
+            iddetail.style.display = "block";
+            btn_kq.style.display = "block";
+        }
+        else {
+            iddetail.style.display = "none";
+            btn_kq.style.display = "none";
+        }
+
+    }
+    var button = document.getElementById('myBtn');
+    var btnstop = document.getElementById('btnstop');
+    var internalnumber = 0;
+    function btnspecial() {
+        if (btnstop.style.display == "none") {
+            btnstop.style.display = "block"
+            btnsubmit.style.display = "none"
+        }
+        else if (btnstop.style.display == "block") {
+            btnstop.style.display = "none"
+
+        }
+    }
+    
+</script>
+
+

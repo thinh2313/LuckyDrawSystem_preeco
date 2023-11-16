@@ -1,0 +1,56 @@
+﻿@model PreecoLuckyDraw.Models.GIFT
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Tạo</h2>
+
+
+@using (Html.BeginForm("Create", "Gift", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <script>
+        @**@
+        function ChangeImage(UploadImage, previewImg) {
+            if (UploadImage.files && UploadImage.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $(previewImg).attr('src', e.target.result);
+                }
+                reader.readAsDataURL(UploadImage.files[0]);
+            }
+        }</script>
+    <div class="form-horizontal">
+        <h4>QUÀ</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            <label class = "control-label col-md-2">Tên</label>
+            @*@Html.LabelFor(model => model.NAME, htmlAttributes: new { @class = "control-label col-md-2" })*@
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.NAME, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.NAME, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Hình ảnh</label>
+            <div class="col-md-10">
+                <img src="@Url.Content(Model.IMAGE)" style="height:200px; width:200px; margin:10px;border-radius:2px;" id="previewImg" />
+                <input id="file" type="file" name="UploadImage"class="inputfile" onchange="ChangeImage(this, document.getElementById('previewImg'))" />
+                @Html.ValidationMessageFor(model => model.IMAGE, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group"></div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Tạo" class="btn-create" />
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,182 @@
+﻿@model PreecoLuckyDraw.Models.CAMPAIGN
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+  
+   td{
+       padding-bottom:50px;
+   }
+    #hide {
+        display: none;
+        color:red;
+    }
+   
+</style>    
+<h2>Cấu hình</h2>
+
+<script>
+    function ChangeLogo(UploadLogo, previewLogo) {
+        if (UploadLogo.files && UploadLogo.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $(previewLogo).attr('src', e.target.result);
+            }
+            reader.readAsDataURL(UploadLogo.files[0]);
+        }
+    }
+    function ChangeBackground(UploadBackground, previewBg) {
+        if (UploadBackground.files && UploadBackground.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $(previewBg).attr('src', e.target.result);
+            }
+            reader.readAsDataURL(UploadBackground.files[0]);
+        }
+    }
+    function validate() {
+        var contact = document.getElementById("contact");
+        var note = document.getElementById("hide");
+        let contactimg= document.getElementById("contactimg")
+        if (contact.checked) {
+            note.style.display = "block";
+            contactimg.style.border = "red solid";
+
+        } else {
+            note.style.display = "none";
+            contactimg.style.border = "yellow solid";
+
+        }
+    }
+</script>
+@using (Html.BeginForm("Edit", "Campaign", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <h4>
+        @Html.DisplayFor(model => model.NAME)
+
+    </h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.IDCAMPAIGN)
+    @Html.HiddenFor(model => model.STARTDATE)
+    @Html.HiddenFor(model => model.WINNERS)
+    @Html.HiddenFor(model => model.EXPIREDDATE)
+    @Html.HiddenFor(model => model.STATUS)
+  
+    <table class="edittable">
+        <tr>
+
+            @*<th>Màu chữ Tiêu đề </th>
+            <th>
+                <input type="color" name="color_title" id="color_title" class="form-control colorpick" value="" />
+            </th>*@
+            <th colspan="2">Tiêu đề</th>
+            <th colspan="2">
+                @Html.EditorFor(model => model.NAME, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.NAME, "", new { @class = "text-danger" })
+            </th>
+        </tr>
+        <tr>
+            <th colspan="2">LOGO</th>
+            <th colspan="2">Hình nền (suggest tên file không chứa ký tự đặc biệt và khoảng trắng)</th>
+
+        </tr>
+        <tr>
+            <td colspan="2">
+                <img src="@Url.Content(Model.LOGO)" style="height:120px; width:244px; margin:10px;border-radius:2px;" id="previewLogo" />
+                <input id="file" type="file" name="UploadLogo" class="inputfile" onchange="ChangeLogo(this, document.getElementById('previewLogo'))" />
+                @Html.ValidationMessageFor(model => model.LOGO, "", new { @class = "text-danger" })
+            </td>
+            <td colspan="2">
+                <img src="@Url.Content(Model.BACKGROUND)" style="height: 120px; width: 244px; margin: 10px; border-radius: 2px;" id="previewBg" />
+                <input id="file" type="file" name="UploadBackground" class="inputfile" onchange="ChangeBackground(this, document.getElementById('previewBg'))" />
+                @Html.ValidationMessageFor(model => model.BACKGROUND, "", new { @class = "text-danger" })
+
+            </td>
+
+        </tr>
+        <tr>
+            <th>Nền nút bấm</th>
+            <th>Chữ nút bấm</th>
+            <th>Màu số</th>
+            <th>Màu nền số</th>
+        </tr>
+        <tr>
+            <td>
+                @Html.EditorFor(model => model.COLORBTN_BG, new { htmlAttributes = new { @class = "form-control", @onchange = "myFunction(event)" } })
+                <input type="color" name="COLORBTN_BG" id="COLORBTN_BG1" class=" colorpick" value=""disabled />
+
+                @Html.ValidationMessageFor(model => model.COLORBTN_BG, "", new { @class = "text-danger" })
+            </td>
+            <td>
+                @Html.EditorFor(model => model.COLORBTN_TEXT, new { htmlAttributes = new { @class = "form-control", @onchange = "myFunction(event)" } })
+
+                <input type="color" name="COLORBTN_TEXT" id="COLORBTN_TEXT1" class=" colorpick" value=""disabled />
+
+                @Html.ValidationMessageFor(model => model.COLORBTN_TEXT, "", new { @class = "text-danger" })
+            </td>
+            <td>
+                @Html.EditorFor(model => model.COLORTEXT, new { htmlAttributes = new { @class = "form-control", @onchange = "myFunction(event)" } })
+
+                <input type="color" name="COLORTEXT" id="COLORTEXT1" class=" colorpick" value=""disabled />
+
+                @Html.ValidationMessageFor(model => model.COLORTEXT, "", new { @class = "text-danger" })
+            </td>
+            <td>
+                @Html.EditorFor(model => model.COLORBG, new { htmlAttributes = new { @class = "form-control", @onchange = "myFunction(event)" } })
+                <input type="color" name="COLORBG" id="COLORBG1" class=" colorpick" value=""disabled />
+
+
+                @Html.ValidationMessageFor(model => model.COLORBG, "", new { @class = "text-danger" })
+            </td>
+        </tr>
+      
+        @if ((int)@Session["STATUS"] == 3)
+        {
+            <tr>
+                <th>Thêm kiểu quay ( có nút dừng )</th>
+                <td colspan="3" style="">
+                    <img style="border:2px yellow solid;" src="~/Assets/img/Capture.PNG" height="250" width="380"id="contactimg" class="contact" alt="Type spin" />
+                    <input type="checkbox" id="contact" onchange="validate()" name="name" value="Sử dụng kiểu quay" />
+                    <p id="hide">Contact Preeco for using</p>
+                </td>
+            </tr>
+        }
+
+        <tr>
+            <td colspan="4" style="text-align:center">
+                <input type="submit" value="Save" class="btn-program" />
+            </td>
+        </tr>
+    </table>
+    <script>
+
+
+        var colorBG_numb = document.getElementById("COLORBG1");
+        var colortext_numb = document.getElementById("COLORTEXT1");
+        var colorBG_btn = document.getElementById("COLORBTN_BG1");
+        var colortext_btn = document.getElementById("COLORBTN_TEXT1");
+        colorBG_numb.value = document.getElementById("COLORBG").value;
+        colortext_numb.value = document.getElementById("COLORTEXT").value;
+        colorBG_btn.value = document.getElementById("COLORBTN_BG").value;
+        colortext_btn.value = document.getElementById("COLORBTN_TEXT").value;
+
+        function myFunction(event) {
+            let value_color = event.target.value;
+            const id = event.target.id + 1;
+            const i = document.getElementById(id)
+            i.value = value_color;
+        }
+    </script>
+</div>
+}
+    
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,78 @@
+﻿@model IEnumerable<PreecoLuckyDraw.Models.EMPLOYEE>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Setting_employee</title>
+</head>
+<body>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.LASTNAME)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FIRSTNAME)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BU)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TIMEDRAW)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GIFT)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RESULT)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LASTNAME)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FIRSTNAME)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BU)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TIMEDRAW)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GIFT)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RESULT)
+                </td>
+            </tr>
+        }
+
+    </table>
+    @using (Html.BeginForm("Upload", "Luckynumber", FormMethod.Post, new
+    {
+        enctype = "multipart/form-data"
+    }))
+    {
+        <input type="file"
+               class="inputfile"
+               name="UploadedFileEx" />
+        <input type="submit"
+               name="Submit"
+               value="Submit" class="btn-program" />
+    }
+    <a href="/Luckynumber/clearEmployee" class="btn-delete">Xóa</a>
+
+</body>
+</html>

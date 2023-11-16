@@ -1,0 +1,102 @@
+﻿﻿@model IEnumerable<PreecoLuckyDraw.Models.WINNER>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="content-table">
+    <div style="display:flex">
+        <h2 class="title-header" style="width: 95% ">DANH SÁCH NGƯỜI THẮNG GIẢI</h2>
+        <input type="hidden" id="namecus" value="@Session["NAMECUS"]" />
+
+    </div>
+    <div class="box-container">
+        <div style="width:100%">
+            <button class="btn-program" onclick="ExportExcel()">
+                Xuất File Excel
+            </button>
+            @if ((int)Session["STATUS"] == 1 || (int)Session["STATUS"] == 2313)
+            {
+                <a href="/Winner/DeleteListWinners" class="btn-delete" style="float:right">Xóa</a>
+            }
+        </div>
+        <table class="table" id="table2excel">
+            <tr>
+                <th>
+                    Chương trình
+                </th>
+                <th class="hidden_element_mobile">
+                    Tên
+                </th>
+                <th>
+                    Số điện thoại
+                </th>
+                <th>
+                    Ngày trúng giải
+                </th>
+
+                <th>
+                    Giải
+                </th>
+                <th class="hidden_element_mobile">Quà</th>
+                <th style="text-align:center" class="hidden_element_mobile">Hình quà</th>
+
+                <th class="hidden_element_mobile"></th>
+
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CAMPAIGN_DETAIL.CAMPAIGN.NAME)
+                    </td>
+                    <td class="hidden_element_mobile">
+                        @Html.DisplayFor(modelItem => item.NAME)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PHONE)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.WINDATE)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CAMPAIGN_DETAIL.PRIZE.NAME)
+                    </td>
+                    <td class="hidden_element_mobile">
+                        @Html.DisplayFor(modelItem => item.CAMPAIGN_DETAIL.GIFT.NAME)
+                    </td>
+                    <td style="text-align:center" class="hidden_element_mobile">
+                        <img style="width:32px;height:32px;border-radius:4px" src="@item.CAMPAIGN_DETAIL.GIFT.IMAGE" />
+                    </td>
+                    @if ((int)Session["STATUS"] == 1 || (int)Session["STATUS"] == 2313 || (int)Session["STATUS"] == 2)
+                    {
+                        <td class="hidden_element_mobile">
+                            <a href="/Winner/Delete/@item.PHONE" class="btn-delete">Xóa</a>
+                        </td>
+}
+                </tr>
+            }
+
+        </table>
+    </div>
+    <script>
+        var namecus = document.getElementById("namecus").value;
+        console.log(namecus);
+        const date = new Date()
+        let day = date.getDate()
+        let month = date.getMonth() + 1
+        let year = date.getFullYear()
+        let fullDate = day + "-" + month + "-" + year;
+
+        function ExportExcel() {
+            $("#table2excel").table2excel({
+                name: "TênFile",
+                filename: namecus + "_" + fullDate + "_" + "Winners.xlsx",
+                fileext: ".xlsx",
+            });
+        };
+    </script>
+</div>

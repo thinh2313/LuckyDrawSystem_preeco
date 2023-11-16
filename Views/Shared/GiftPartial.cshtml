@@ -1,0 +1,67 @@
+﻿@model IEnumerable<PreecoLuckyDraw.Models.PRIZE>
+
+<style>
+    td, th {
+        padding: 5px;
+    }
+
+    .border-giftpartial {
+        border: solid blue 0.5px
+    }
+
+    #close {
+        width: 25px;
+        position: absolute;
+        height: 25px;
+        font-size: 5px;
+        top: 15px;
+        right: 35px;
+        background-color: white;
+        color: black;
+        border: 2px solid #555555;
+        padding: 0;
+        font-size: 17px;
+        font-weight: bold;
+    }
+
+        #close :hover {
+            background-color: #555555;
+            color: white;
+        }
+</style>
+<script>
+    var span = document.getElementById("close");
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+</script>
+<link href="~/Assets/css/style.css" rel="stylesheet" />
+
+<h2>List of Gift Codes</h2>
+<button id="close">X</button>
+<table style="width:100%;border:solid blue 0.5px">
+    <tr class=" border-giftpartial">
+        <th>NAME</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr class=" border-giftpartial">
+            <td class=" border-giftpartial">
+                @Html.DisplayFor(modelItem => item.NAME)
+            </td>
+            <td>
+                <a href="/Campaign/AddGift/@item.IDPRIZE" class="pest_btn " style=" margin-right: 5px;">
+                    Add to Campaign
+                </a>
+
+
+            </td>
+
+        </tr>
+    }
+
+</table>
+

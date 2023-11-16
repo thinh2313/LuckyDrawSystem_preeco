@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="979ed6a5f3784a88b79e5fa85b81b047" Name="Diagram1">
+        <EntityTypeShape EntityType="DbPreecoLuckyDrawModel.CAMPAIGN" Width="1.5" PointX="3" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="DbPreecoLuckyDrawModel.CAMPAIGN_DETAIL" Width="1.5" PointX="5.25" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="DbPreecoLuckyDrawModel.EMPLOYEE" Width="1.5" PointX="7.75" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DbPreecoLuckyDrawModel.GIFT" Width="1.5" PointX="3" PointY="9" IsExpanded="true" />
+        <EntityTypeShape EntityType="DbPreecoLuckyDrawModel.JOINER" Width="1.5" PointX="5.25" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DbPreecoLuckyDrawModel.LUCKYNUMBER" Width="1.5" PointX="9.75" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DbPreecoLuckyDrawModel.PRIZE" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DbPreecoLuckyDrawModel.USER" Width="1.5" PointX="0.75" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DbPreecoLuckyDrawModel.WINNER" Width="1.5" PointX="7.5" PointY="4.25" IsExpanded="true" />
+        <AssociationConnector Association="DbPreecoLuckyDrawModel.FK_CAMPAIGN_USERS" ManuallyRouted="false" />
+        <AssociationConnector Association="DbPreecoLuckyDrawModel.FK_DETAIL_CAMPAIGN" ManuallyRouted="false" />
+        <AssociationConnector Association="DbPreecoLuckyDrawModel.FK_JOINER_CAMPAIGN" ManuallyRouted="false" />
+        <AssociationConnector Association="DbPreecoLuckyDrawModel.FK_DETAIL_GIFT" ManuallyRouted="false" />
+        <AssociationConnector Association="DbPreecoLuckyDrawModel.FK_DETAIL_PRIZE" ManuallyRouted="false" />
+        <AssociationConnector Association="DbPreecoLuckyDrawModel.FK_WINNER_DETAILCP" ManuallyRouted="false" />
+        <AssociationConnector Association="DbPreecoLuckyDrawModel.FK_GIFT_USERS" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,249 @@
+﻿@model  IEnumerable<PreecoLuckyDraw.Models.CAMPAIGN_DETAIL>
+
+@{
+    ViewBag.Title = Session["NAME"];
+    Layout = "~/Views/Shared/_LayoutProgram.cshtml";
+}
+<link href="~/Assets/css/styles.css" rel="stylesheet" />
+<style>
+</style>
+<audio id="drawAudio">
+    <source src="~/Assets/img/spin.mp3" type="audio/mp3">
+    sound quay so
+</audio>
+<audio id="congraAudio">
+    <source src="~/Assets/img/phaohoa.mp3"type="audio/mp3">
+    sound congratulation
+</audio>
+<div id="phaohoa" class="pyro"><div class="before"></div><div class="after"></div></div>
+<div style="display: grid;">
+    <!--title-->
+    <div id="logoImage">
+        <img id="logo" />
+    </div>
+    <div class="container_title">
+
+        <div id="titlename" class="title">
+            <abbr id="titlecampaign" title="Nhấp để thay đổi" onclick="showhideTitle()">
+                @Session["NAME"]
+            </abbr>
+        </div>
+
+    </div>
+    <!--number-->
+    <div class="number">
+        <div class="box1" style="height: fit-content;">
+            <div style="flex-wrap: nowrap;display: flex;">
+                <button class="square" id="0" disabled></button>
+                <button class="square" id="1" disabled></button>
+                <button class="square" id="2" disabled></button>
+                <button class="square" id="3" disabled></button>
+                <button class="square" id="4" disabled></button>
+                <button class="square" id="5" disabled></button>
+                <button class="square" id="6" disabled></button>
+                <button class="square" id="7" disabled></button>
+                <button class="square" id="8" disabled></button>
+                <button class="square" id="9" disabled></button>
+            </div>
+        </div>
+    </div>
+    <!--status-->
+    <div class="flex_center">
+        <div class="box"></div>
+        <div class="box1" style="text-align:center">
+            <p id="status">
+                Tìm người đoạt giải ....
+            </p>
+            <button id="myBtn" class="btn-run" onclick="Export()">Kết quả</button>
+            @*<button id="btn-hideshow" class="btn-run" onclick="hideShow()">Nhập thông tin</button>*@
+
+
+
+        </div>
+        @*<div class="box">
+            <a href="/Campaign_Detail/RunProgramByName/@Session["IDCAMPAIGN"]"
+               style=" position: absolute;font-size: 28px; color: #FFFFFF;">
+                <i class="fa fa-chevron-right" aria-hidden="true"></i>
+            </a>
+        </div>*@
+    </div>
+    <!-- The Modal -->
+
+    <div id="myModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div>
+                <span class="close">&times;</span>
+            </div>
+            <table class="table" id="table2excel">
+                <thead>
+                    <tr>
+                        <th scope="col">Giải</th>
+                        <th scope="col">Tên</th>
+                        <th>SĐT</th>
+                        <th>Ngày đoạt giải</th>
+                    </tr>
+                </thead>
+                <tbody id="result">
+                    <!-- <tr></tr> -->
+                </tbody>
+
+            </table>
+            <button id="btnSave" class="btn-run" onclick="saveWinner()">Lưu</button>
+
+            <button class="btn-run" onclick="ExportExcel()">
+                Xuất File Excel
+
+            </button>
+        </div>
+    </div>
+    <div class="container " style="display:flex;justify-content:center">
+        <div class="prize_mobile">
+            <div style="width:30%">
+                <fieldset id="fs" style="border: 1px solid #FFFFFF;">
+                    <section class="contact-form">
+                        <form action="">
+
+                            @if (Session["check"] == null)
+                            {<div class="input-group">
+
+                                    <p>Chưa có giải thưởng . Hãy <a href="/Campaign/Details/@Session["IDCAMPAIGN"]">thêm giải</a> vào chương trình</p>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="input-group">
+                                     @*<p for="subject">Giải thưởng</p>*@
+
+                                    @{ Html.RenderAction("SelectPrizeCamp", "Campaign_Detail"); }
+                                </div>
+                                <div class="input-group">
+                                    <button id="submit" class="btn-run" type="submit">Quay</button>
+                                </div>
+                            }
+                        </form>
+                    </section>
+                </fieldset>
+            </div>
+            <div style=" padding-left:50px">
+
+                <iframe id="iddetail" height="350" width="500" title="Iframe Example" style="border:none">
+                </iframe>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modal-congrate" class="modal">
+    <div class="modal-content-congrate">
+        <div id="congrate">
+        </div>
+    </div>
+</div>
+<div>
+    @{ Html.RenderAction("listJoiners", "Campaign"); }
+</div>
+
+<div style="display:none">
+    <input value="@Session["BACKGROUND"]" id="BACKGROUND"></>
+    <input value="@Session["COLORBG"]" id="COLORBG"></>
+    <input value="@Session["COLORTEXT"]" id="COLORTEXT"></>
+    <input value="@Session["COLORBTN_BG"]" id="COLORBTN_BG"></>
+    <input value="@Session["COLORBTN_TEXT"]" id="COLORBTN_TEXT"></>
+    <input value="@Session["LOGO"]" id="LOGO"></>
+    <input value="@Session["NAME"]" id="nameCamp"></>    
+    <input value="@Session["NAMECUS"]" id="nameCus"></>
+
+</div>
+<script src="~/Assets/js/scripts.js"></script>
+<script>
+
+
+    //--------------------Giao dien ->
+    const bg = document.getElementById("bg");
+    const logo = document.getElementById("logo");
+    const btnrun = document.getElementById("myBtn").style;
+    const btnSubmit = document.getElementById("submit").style;
+    const btnselect = document.getElementById("IDDETAIL").style;
+
+    const BACKGROUND = document.getElementById("BACKGROUND").value;
+
+    const COLORBG = document.getElementById("COLORBG").value;
+    const COLORTEXT = document.getElementById("COLORTEXT").value;
+    const COLORBTN_BG = document.getElementById("COLORBTN_BG").value;
+    const COLORBTN_TEXT = document.getElementById("COLORBTN_TEXT").value;
+    const LOGO = document.getElementById("LOGO").value;
+    console.log(LOGO)
+    if (LOGO == "/Assets/img/preeco.png" ) {
+        logo.style.display = "none";
+    }
+    else {
+        logo.src = LOGO;
+    }
+
+    bg.style.backgroundImage = 'url(' + BACKGROUND + ')';
+    btnrun.color = COLORBTN_TEXT; btnrun.backgroundColor = COLORBTN_BG;
+    btnSubmit.color = COLORBTN_TEXT; btnSubmit.backgroundColor = COLORBTN_BG;
+    btnselect.color = COLORBTN_BG; btnselect.backgroundColor = COLORBTN_TEXT;
+
+    const square0 = document.getElementById("0").style;
+    const square1 = document.getElementById("1").style;
+    const square2 = document.getElementById("2").style;
+    const square3 = document.getElementById("3").style;
+    const square4 = document.getElementById("4").style;
+    const square5 = document.getElementById("5").style;
+    const square6 = document.getElementById("6").style;
+    const square7 = document.getElementById("7").style;
+    const square8 = document.getElementById("8").style;
+    const square9 = document.getElementById("9").style;
+    square0.color = COLORTEXT; square0.backgroundColor = COLORBG;
+    square1.color = COLORTEXT; square1.backgroundColor = COLORBG;
+    square2.color = COLORTEXT; square2.backgroundColor = COLORBG;
+    square3.color = COLORTEXT; square3.backgroundColor = COLORBG;
+    square4.color = COLORTEXT; square4.backgroundColor = COLORBG;
+    square5.color = COLORTEXT; square5.backgroundColor = COLORBG;
+    square6.color = COLORTEXT; square6.backgroundColor = COLORBG;
+    square7.color = COLORTEXT; square7.backgroundColor = COLORBG;
+    square8.color = COLORTEXT; square8.backgroundColor = COLORBG;
+    square9.color = COLORTEXT; square9.backgroundColor = COLORBG;
+
+
+
+
+    function chosse() {
+        var imgprize = document.getElementById("iddetail");
+        var IDitemprize = $("#IDDETAIL option:selected").val();
+        if (IDitemprize == "") {
+            imgprize.style.display = "none";
+            imgprize.src = "/Campaign_Detail/ViewDefaultSelect";
+        }
+        imgprize.style.display = "block";
+        imgprize.src = "/Campaign_detail/Detail/" + IDitemprize;
+
+    }
+    function saveWinner() {
+        var winners = new Array();
+        $("#table2excel tbody tr").each(function () {
+            var row = $(this);
+            var winner = {};
+            winner.NAME = row.find("TD").eq(1).html();
+            winner.PHONE = row.find("TD").eq(2).html();
+            winner.WINDATE = row.find("TD").eq(3).html();
+            winner.IDDETAIL = row.find("TD").eq(4).html();
+            winners.push(winner);
+        });
+        $.ajax({
+            type: "POST",
+            url: '/Winner/UpdateWinner',
+            data: JSON.stringify(winners),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (r) {
+                alert("Đã lưu thông tin vào database");
+            },
+            error: function (r) {
+                alert("Đã lưu thông tin vào database..");
+            }
+        });
+    };
+</script>

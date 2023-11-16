@@ -1,0 +1,168 @@
+﻿@model PreecoLuckyDraw.Models.EMPLOYEE
+
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.min.js"></script>
+    <link rel="stylesheet" href="~/Assets/css/styles.css" />
+    <style>
+        #pagestep1 {
+        }
+
+        #btn-shake {
+        }
+
+        #btn-step {
+            display: none
+        }
+
+        #timedraw {
+            display: block
+        }
+
+        #step-bottle {
+            display: flex;
+        }
+
+        #step-cauchuc {
+            display: none
+        }
+
+        #step-result {
+            display: none
+        }
+
+        #step-lucky {
+            display: none
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        #bg {
+            margin: 0;
+            background-image: url("/Assets/img/Elements/bg_size_phone.png");
+            height: 100vh;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        #step-thankyou {
+            display: none;
+        }
+    </style>
+    <script>
+    
+    </script>
+</head>
+
+<body id="bg">
+    <div id="overlay">
+        <img src="~/Assets/img/spinphonwhite.png" width="350" alt="">
+        <p>Xoay dọc màn hình để có trải nghiệm tốt nhất</p>
+    </div>
+
+
+    <div class="home">
+        <div class="div">
+            <div class="overlap ">
+
+                <div id="step-bottle" class="flex-center container">
+                    <img class="logo" onclick="tohome()" src="~/Assets/img/Elements/Logo@4x.png" />
+                    <img onclick="tohome()" style="object-fit: cover;margin-bottom: 50px;object-fit: cover;"
+                         src="~/Assets/img/Elements/Tagline@4x.png" width="40%" />
+                    <p id="welcome" class="text-notice" style="margin-top: 25px;">
+                        Hello  @Html.DisplayFor(model => model.LASTNAME)
+                    </p>
+                    <p id="noticestep2" class="text-notice">Vui lòng chạm hoặc lắc để nhận được quẻ xăm như ý.</p>
+                    <img id="bottle" src="~/Assets/img/Elements/bottle_shake.png" onclick=" Run()" width="30%">
+                    <input type="text" style="display:none" id="numbdraw" value="@Html.DisplayFor(model => model.TIMEDRAW)" />
+                    <input type="text" style="display:none" id="id_employee" value="@Html.DisplayFor(model => model.ID)" />
+                    <input type="text" style="display:none" id="LASTNAME" value="@Html.DisplayFor(model => model.LASTNAME)" />
+                    <input type="text" style="display:none" id="FIRSTNAME" value="@Html.DisplayFor(model => model.FIRSTNAME)" />
+                    <input type="text" style="display:none" id="BU" value="@Html.DisplayFor(model => model.BU)" />
+                    <input type="text" style="display:none" id="GIFT" value="@Html.DisplayFor(model => model.GIFT)" />
+                    <input type="text" style="display:none" id="RESULT" value="@Html.DisplayFor(model => model.RESULT)" />
+
+                </div>
+                <div id="step-cauchuc" class="flex-center container">
+                    <img class="logo" onclick="tohome()" src="~/Assets/img/Elements/Logo@4x.png" />
+                    <img onclick="tohome()" style="object-fit: cover;margin-bottom: 50px;object-fit: cover;"
+                         src="~/Assets/img/Elements/Tagline@4x.png" width="40%" />
+                    <img id="cauchuc" src="" width="50%">
+
+                </div>
+                <div id="step-result" class="flex-center container">
+                    <img class="logo" onclick="tohome()" src="~/Assets/img/Elements/Logo@4x.png" />
+                    <img onclick="tohome()" style="object-fit: cover;margin-bottom: 50px;object-fit: cover;"
+                         src="~/Assets/img/Elements/Tagline@4x.png" width="40%" />
+                    <p id="noticestep4" class="text-notice" style="    margin: 0;"></p>
+                    <p id="normalnumber" class="text-notice"
+                       style="
+                       font-size: 80px;font-style: normal;font-weight: 700;line-height: 50px;margin-top: 35%;margin-bottom: 37%; "></p>
+                    <p class="text-notice">
+                        Vui lòng đến quầy Giải xăm để nhận được lá xăm tương ứng.
+                    </p>
+
+                </div>
+                <div id="step-lucky" class="flex-center container">
+                    <img class="logo" onclick="tohome()" src="~/Assets/img/Elements/Logo@4x.png" />
+                    <img onclick="tohome()" style="object-fit: cover;margin-bottom: 50px;object-fit: cover;"
+                         src="~/Assets/img/Elements/Tagline@4x.png" width="40%" />
+                    <p id="noticestep4-1" class="text-notice" style="    margin: 0;">  VN_120348</p>
+                    <p class="text-notice" style="    margin: 0;"> XĂM THƯỢNG THƯỢNG</p>
+                    <p id="luckynumber" class="text-notice"
+                       style="    font-size: 80px;font-style: normal;font-weight: 700;line-height: 50px;margin-top: 17%;margin-bottom: 16%; ">
+
+                    </p>
+                    <p class="text-notice" style="font-size: 16px;">
+                        Đây là Xăm Thượng Thượng trong truyền thuyết, vui
+                        lòng đến quầy Giải xăm để nhận lá xăm tương ứng và quà may mắn.
+                    </p>
+                    <img src="~/Assets/img/Elements/thankyou.png" width="80%">
+                </div>
+                <div id="step-thankyou" class="flex-center container">
+                    <img class="logo" onclick="tohome()" src="~/Assets/img/Elements/Logo@4x.png" />
+                    <img onclick="tohome()" style="object-fit: cover;margin-bottom: 50px;object-fit: cover;"
+                         src="~/Assets/img/Elements/Tagline@4x.png" width="40%" />
+                    <p id="noticestep4-1" class="text-notice" style="margin: 0;margin-top: 17%;margin-bottom: 28%;">
+                        Cám ơn bạn đã tham gia
+                    </p>
+
+
+                    <img src="~/Assets/img/Elements/thankyou.png" width="80%">
+                </div>
+
+                <div id="btn-step" class="group" style="margin-top: 25px;">
+                    <div class="overlap-group">
+                        <div class="text-wrapper" onclick="goRun()">
+                            LẮCCC TIẾP
+                        </div>
+                    </div>
+                </div>
+                <p id="timedraw" class="text-notice"
+                   style="margin-top: 35px;font-size: 16px;font-style: italic;font-weight: 400;">
+                    Bạn còn @Html.DisplayFor(model => model.TIMEDRAW) lượt lắc
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+
+    <script src="~/Assets/js/scripts.js"></script>
+
+</body>
+
+</html>

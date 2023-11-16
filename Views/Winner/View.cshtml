@@ -1,0 +1,110 @@
+﻿
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <style>
+        #employform {
+            display: none;
+        }
+
+        #clientform {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="box-button">
+        <button onclick="switchbtnClient()">Client</button>
+        <button onclick="switchbtnEmp()">Employee</button>
+    </div>
+    <div id="employform">
+        <input name="Email" id="email" type="email" placeholder="Email">
+        <input name="Name" id="name" type="text" placeholder="Name">
+        <button type="submit" onclick="handleSubmitEmployee()">Send</button>
+    </div>
+    <div id="clientform">
+        <input name="Email" id="email1" type="email" placeholder="Email">
+        <input name="Name" id="name1" type="text" placeholder="Name">
+        <button type="submit" onclick="handleSubmitClient()">Send</button>
+    </div>
+    <script>
+        var url = 'https://script.google.com/macros/s/AKfycbyFHHiNZhQSv1DPbanES7C2eiKeewCBo60WgopD_oP0ZgkK6b2klmiZk6eFGs35BpUf/exec';
+        var x;
+        var listdata;
+        $.ajax({
+            type: "GET",
+            url: '/Winner/listWinners',
+            dataType: "json",
+            success: function (data) {
+                x = data.PHONE
+                listdata = [...data]
+                console.log("Xử lý thông tin thành công.!!")
+            },
+            error: function (r) {
+                alert("Vấn đề phía dữ liệu..!!");
+            }
+        });
+        console.log(listdata)
+        var randomx = Math.floor(Math.random() * x.length);
+        function switchbtnEmp() {
+            document.getElementById("employform").style.display = "block";  //show the form
+            document.getElementById("box-button").style.display = "none";
+        }
+        function switchbtnClient() {
+            document.getElementById("clientform").style.display = "block";   //show the form
+            document.getElementById("box-button").style.display = "none";
+
+        }
+        function handleSubmitEmployee() {
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            var data = {
+                Email: email,
+                Name: name,
+                Role: "Employee",
+                Code: randomx
+            };
+            $.ajax({
+                url: url,
+                method: "POST",
+                dataType: "json",
+                data: data
+            });
+            console.log(data)
+            listdata.splice(x, 1);
+
+        }
+        function handleSubmitClient() {
+            const name = document.getElementById("name1").value;
+            const email = document.getElementById("email1").value;
+            var data = {
+                Email: email,
+                Name: name,
+                Role: "Client",
+                Code: randomx
+            };
+            $.ajax({
+                url: url,
+                method: "POST",
+                dataType: "json",
+                data: data
+            });
+            console.log(data)
+            listdata.splice(x, 1);
+
+        }
+
+    </script>
+</body>
+
+
+</html>

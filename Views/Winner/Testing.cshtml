@@ -1,0 +1,278 @@
+﻿
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <style>
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            padding-top: 230px; /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        /* The Close Button */
+        .close {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+            .close:hover,
+            .close:focus {
+                color: #000;
+                text-decoration: none;
+                cursor: pointer;
+            }
+        #content-congrate {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        #employform {
+            display: none;
+        }
+
+        #clientform {
+            display: none;
+        }
+        input {
+            font-size: 24px;
+            padding: 15px 25px;
+            border: black 1px solid;
+        }
+        .input-margin {
+            margin-bottom: 15px;
+        }
+        .btn {
+            background-color: cyan;
+            border-radius: 9px;
+            border: #26e0e0 2px solid;
+            font-weight:bold
+        }
+            .btn:hover {
+                background-color:  #1ddcdc;
+                border: #26e0e0 2px solid;
+                cursor: pointer
+            }
+        #wrapper {
+            height: 100vh;
+            display: none;
+            justify-content: center;
+            align-items: center;    
+        }
+        .container{
+            border:black 1px solid;
+                border-radius:9px;
+                padding:25px
+        }
+        .layout-input{
+            display:flex;
+            flex-direction:column
+        }
+    </style>
+</head>
+
+<body>
+    <a href="/Winner/Create" onclick="actionStart()"> Tao</a>
+    <a href="/Winner/DeleteListWinners" >Xóa</a>
+
+    <div id="wrapper">
+        <div class="container">
+            <div id="box-button">
+                <input onclick="switchbtnClient()" value="KHÁCH HÀNG" type="button" class="btn" />
+                <input onclick="switchbtnEmp()" value="NHÂN VIÊN" type="button" class="btn" />
+            </div>
+            <div id="employform" class="layout-input">
+                <input class="input-margin" name="ID" id="ID" type="email" placeholder="Mã nhân viên">
+                <input class="input-margin" name="Email" id="email" type="email" placeholder="Email">
+                <input class="input-margin" name="Name" id="name" type="text" placeholder="Họ và tên">
+                <input type="submit" onclick="handleSubmitEmployee()" value="Send" class="btn" />
+            </div>
+            <div id="clientform" class="layout-input">
+                <input class="input-margin" name="Email" id="email1" type="email" placeholder="Email">
+                <input class="input-margin" name="Name" id="name1" type="text" placeholder="Họ và tên">
+                <input type="submit" onclick="handleSubmitClient()" value="Send" class="btn" />
+            </div>
+        </div>
+    </div>
+    <div id="myModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="content-congrate"></div>
+            <input class="btn" type="button" name="name" value="Xác nhận" onclick="deleteNumb()" />
+        </div>
+
+    </div>
+    <script>
+        checkExist();
+        var flag = 0;
+        var url = 'https://script.google.com/macros/s/AKfycbyFHHiNZhQSv1DPbanES7C2eiKeewCBo60WgopD_oP0ZgkK6b2klmiZk6eFGs35BpUf/exec';
+        var x;
+        var listdata;
+        var masomayman;
+        var content = document.getElementById("content-congrate");
+        $.ajax({
+            type: "GET",
+            url: '/Winner/listWinners',
+            dataType: "json",
+            success: function (data) {
+                getData(data)
+                console.log("Xử lý thông tin thành công.!!")
+            },
+            error: function (r) {
+                alert("Vấn đề phía dữ liệu..!!");
+            }
+        });
+        function getData(data) {
+            randomx = Math.floor(Math.random() * data.length);
+            listdata = [...data];
+            masomayman = listdata[randomx].PHONE
+            console.log("randomx : ", randomx)
+            console.log("number - PHONE", masomayman)
+            console.log(listdata)
+        }
+        //var randomx = Math.floor(Math.random() * x.length);
+        function switchbtnEmp() {
+            document.getElementById("employform").style.display = "flex";  //show the form
+            document.getElementById("box-button").style.display = "none";
+        }
+        function switchbtnClient() {
+            document.getElementById("clientform").style.display = "flex";   //show the form
+            document.getElementById("box-button").style.display = "none";
+
+        }
+        function handleSubmitEmployee() {
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const id = document.getElementById("ID").value;
+            var data = {
+                ID: id,
+                Email: email,
+                Name: name,
+                Role: "Employee",
+                Code: masomayman
+            };
+
+            const flagExist = localStorage.getItem("checkExist");
+            if (flagExist != null) {
+                const text = "Mỗi thiết bị chỉ được đăng ký 1 lần"
+            }
+            else if (flagExist == null || flagExist == undefined) {
+                $.ajax({
+                    url: url,
+                    method: "POST",
+                    dataType: "json",
+                    data: data
+                });
+                console.log(data)
+                localStorage.setItem("checkExist", flag);
+                alertNotice(data)
+            }
+
+
+        }
+
+        function handleSubmitClient() {
+            const name = document.getElementById("name1").value;
+            const email = document.getElementById("email1").value;
+            var data = {
+                Email: email,
+                Name: name,
+                Role: "Client",
+                Code: masomayman
+            };
+            const flagExist = localStorage.getItem("checkExist");
+            if (flagExist != null) {
+                const text = "Mỗi thiết bị chỉ được đăng ký 1 lần"
+            }
+            else if (flagExist == null || flagExist == undefined) {
+                $.ajax({
+                    url: url,
+                    method: "POST",
+                    dataType: "json",
+                    data: data
+                });
+                console.log(data)
+                alertNoticeclient(data)
+                localStorage.setItem("checkExist", flag);
+            }
+
+
+        }
+        function deleteNumb() {
+            location.href = "/Winner/Delete/" + masomayman
+
+        }
+        function alertNoticeclient(data) {
+            modal.style.display = "block";
+
+            content.innerHTML = " <h2 style=\"text-align: center;\">Đăng ký thành công !</h2>"
+                + " <p>Tên :" + data.Name + "</p>"
+                + " <p>Email :" + data.Email + "</p>"
+                + "<p>Mã số may mắn :" + masomayman + "</p>"
+        }
+        function alertNotice(data) {
+            modal.style.display = "block";
+
+            content.innerHTML = " <h2 style=\"text-align: center;\">Đăng ký thành công !</h2>"
+                + " <p>Tên :" + data.Name + "</p>"
+                + " <p>Mã nhân viên :" + data.ID + "</p>"
+                + " <p>Email :" + data.Email + "</p>"
+                + "<p>Mã số may mắn :" + masomayman + "</p>"
+        }
+        function checkExist() {
+            const flagExist = localStorage.getItem("checkExist");
+            if (flagExist != null) {
+                alert("Mỗi thiết bị chỉ được đăng ký 1 lần");
+            }
+            else if (flagExist == null || flagExist == undefined) {
+                document.getElementById("wrapper").style.display = "flex";
+            }
+        }
+        function actionStart() {
+            localStorage.removeItem("checkExist");
+            location.href = "Winner/Create"
+        }
+        // Get the modal
+        var modal = document.getElementById("myModal");
+        var span = document.getElementsByClassName("close")[0];
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+
+
+</html>

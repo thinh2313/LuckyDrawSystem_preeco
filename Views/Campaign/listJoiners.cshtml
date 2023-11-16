@@ -1,0 +1,61 @@
+﻿@model IEnumerable<PreecoLuckyDraw.Models.JOINER>
+    @{ 
+        Layout = null;
+    }
+<table id="joiner"style="display:none" cellspacing="0" cellpadding="0">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.IDJOINER)
+
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PHONE)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NAME)
+        </th>
+        @*<th>
+            @Html.DisplayNameFor(model => model.DATEOFBIRTH)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EMAIL)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ADDRESS)
+        </th>*@
+        <th>
+            @Html.DisplayNameFor(model => model.IDCAMPAIGN)
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.IDJOINER)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PHONE)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NAME)
+        </td>
+        @*<td>
+            @Html.DisplayFor(modelItem => item.DATEOFBIRTH)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EMAIL)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ADDRESS)
+        </td>*@
+        <td>
+            @Html.DisplayFor(modelItem => item.IDCAMPAIGN)
+        </td>
+
+    </tr>
+}
+
+</table>
+<script>
+    
+</script>

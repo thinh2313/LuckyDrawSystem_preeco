@@ -1,0 +1,105 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NESTLE_YEP</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.min.js"></script>
+    <link rel="stylesheet" href="~/Assets/css/styles.css" />
+    <style>
+        #pagestep1 {
+        }
+
+        #btn-shake {
+        }
+
+        #btn-step {
+            display: none
+        }
+
+        #timedraw {
+            display: none
+        }
+
+        #step-bottle {
+            display: none
+        }
+
+        #step-cauchuc {
+            display: none
+        }
+
+        #step-result {
+            display: none
+        }
+
+        #step-lucky {
+            display: none
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        #bg {
+            margin: 0;
+            background-image: url("/Assets/img/Elements/bg_size_phone.png");
+            height: 100vh;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        #step-thankyou {
+            display: none;
+        }
+    </style>
+</head>
+
+<body id="bg">
+    <script src="~/Assets/js/scripts.js"></script>
+
+    <div id="overlay">
+        <img src="~/Assets/img/spinphonwhite.png" width="350" alt="">
+        <p>Xoay dọc màn hình để có trải nghiệm tốt nhất</p>
+    </div>
+
+
+    <div class="home">
+        <div class="div">
+            <div class="overlap ">
+
+                <div id="pagestep1" class="container flex-center">
+                    <img class="logo" onclick="tohome()" src="~/Assets/img/Elements/Logo@4x.png" style="margin-top:33% ;" />
+                    <img class="tagline" src="~/Assets/img/Elements/Tagline@4x.png" />
+                    <p class="text-notice" style="margin-top: 85px;">Mời bạn nhập mã nhân viên để được lắc quẻ</p>
+                    <div class="flex-center" style="width: 80%;">
+                        <input type="text" placeholder="Moi nhap MSNV" id="msnv">
+                    </div>
+                </div>
+                <div id="btn-shake" class="group" style="margin-top: 25px;">
+                    <div class="overlap-group">
+                        <div class="text-wrapper" onclick="find_MANV()">
+                            BẮT ĐẦU LẮC
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+
+</body>
+
+</html>

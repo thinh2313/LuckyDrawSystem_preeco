@@ -1,0 +1,153 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/jszip.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.js"></script>
+    <script src="~/Assets/js/jquery.table2excel.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="~/Assets/css/style.css" rel="stylesheet" />
+
+    <link rel="icon" type="image/x-icon" href="~/Assets/img/preeco.png">
+    <script>
+
+        function closed() {
+            document.getElementById("nav_overlay").style.display = "none";
+
+            document.getElementById("nav_mobile").style.transform = "translateX(-100%)";
+        }
+
+        function hideShow() {
+
+            document.getElementById("nav_overlay").style.display = "block";
+            document.getElementById("nav_mobile").style.opacity = "1";
+
+            document.getElementById("nav_mobile").style.transform = "translateX(0%)";
+
+        }
+    </script>
+
+    <style>
+        abbr {
+            cursor: pointer !important;
+            text-decoration: none !important;
+        }
+    </style>
+</head>
+
+<body id="bg" style=" display: flex; flex-direction: column; justify-content: center; align-items: center;">
+    <div class="navbar navbar-fixed-top nav_pc">
+        <div class="container nav-top">
+            <div class="navbar-header">
+                @Html.ActionLink("LuckyDraw", "Index", "Home", new { area = "" }, new { @class = "navbar-brand title-home" })
+            </div>
+            <div class=" ">
+                <ul class="nav navbar-nav nav-top ">
+                    <li>@Html.ActionLink("chương trình", "Index", "Campaign", null, new { @style = "border-radius:0 0 0 10px" })</li>
+                    <li>@Html.ActionLink("giải", "Index", "Prize")</li>
+                    @if (Session["STATUS"] != null)
+                    {
+                        if ((int)Session["STATUS"] == 1 || (int)Session["STATUS"] == 2313)
+                        {
+                            <li>@Html.ActionLink("tài khoản", "Index", "Users")</li>
+                        }
+                    }
+                    <li>@Html.ActionLink("quà", "Index", "Gift")</li>
+
+                    <li>@Html.ActionLink("người thắng giải", "Index", "Winner", null, new { @style = "border-radius:0 0  10px 0" })</li>
+
+
+                </ul>
+                <div style="display:flex;justify-content:right">
+                    @if (Session["PHONE"] == null)
+                    {
+                        <a href="@Url.Action("Login", "Login")">Login |  </a>
+                        <a href="@Url.Action("RegisterUser", "Login")">| Logup </a>
+
+                    }
+                    else
+                    {
+                        if ((string)Session["NAMECUS"] != "storyLog")
+                        {
+                            <abbr title="Cập nhật thông tin tài khoản">
+                                <a href="/Login/EditAccount/@Session["IDCUS"]" style="color: #4da896">
+                                    Welcome! @Session["NAMECUS"] |
+                                </a>
+                            </abbr>
+                        }
+
+                        @*<a href="/Login/EditAccount/@Session["PHONE"]">Thong tin tk</a>*@
+
+                        <a href="@Url.Action("Logout", "Login")">| Đăng xuất</a>
+                    }
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <label class="nav_mobile-close" style="left:1em" onclick="hideShow()">
+        <svg fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.3.0 by @@fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM64 256c0-17.7 14.3-32 32-32H480c17.7 0 32 14.3 32 32s-14.3 32-32 32H96c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z" /></svg>
+    </label>
+    <div id="nav_overlay" onclick="closed()">
+    </div>
+    <div id="nav_mobile" style="z-index: 1;">
+        <label onclick="closed()" class="nav_mobile-close">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.3.0 by @@fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M175 175C184.4 165.7 199.6 165.7 208.1 175L255.1 222.1L303 175C312.4 165.7 327.6 165.7 336.1 175C346.3 184.4 346.3 199.6 336.1 208.1L289.9 255.1L336.1 303C346.3 312.4 346.3 327.6 336.1 336.1C327.6 346.3 312.4 346.3 303 336.1L255.1 289.9L208.1 336.1C199.6 346.3 184.4 346.3 175 336.1C165.7 327.6 165.7 312.4 175 303L222.1 255.1L175 208.1C165.7 199.6 165.7 184.4 175 175V175zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" /></svg>
+        </label>
+
+        <ul class="nav_mobile-list">
+            <li class="nav_mobile-item">@Html.ActionLink("chương trình", "Index", "Campaign")</li>
+            @*<li class="nav_mobile-item">@Html.ActionLink("giải", "Index", "Prize")</li>*@
+            <li class="nav_mobile-item">@Html.ActionLink("quà", "Index", "Gift")</li>
+            <li class="nav_mobile-item">@Html.ActionLink("giải", "Index", "Prize")</li>
+
+            <li class="nav_mobile-item">@Html.ActionLink("người thắng giải", "Index", "Winner")</li>
+            @if (Session["STATUS"] != null)
+            {
+                if ((int)Session["STATUS"] == 1 || (int)Session["STATUS"] == 2313)
+                {
+
+                    <li class="nav_mobile-item">@Html.ActionLink("tài khoản", "Index", "Users")</li>
+                }
+
+            }
+            @if (Session["PHONE"] == null)
+            {
+                <li class="nav_mobile-item">   <a href="@Url.Action("Login", "Login")">Đăng nhập</a></li>
+                <li class="nav_mobile-item">  <a href="@Url.Action("RegisterUser", "Login")">Đăng ký</a></li>
+            }
+            else
+            {
+                <li class="nav_mobile-item">
+                    <a href="/Login/EditAccount/@Session["IDCUS"]">Thong tin tk</a>
+
+
+                </li>
+                <li class="nav_mobile-item">
+                    <a href="@Url.Action("Logout", "Login")">Đăng xuất</a>
+                </li>
+            }
+        </ul>
+    </div>
+
+    <div class=" body-content">
+        @RenderBody()
+
+    </div>
+    @Scripts.Render("~/bundles/bootstrap")
+
+    @RenderSection("scripts", required: false)
+    <footer style=" position: sticky; bottom: 0; display: flex; opacity: 0.05;">
+        <label style="height: 15px; width: 15px;">
+            ©Copyright:PreecoStudio2313
+        </label>
+    </footer>
+</body>
+</html>

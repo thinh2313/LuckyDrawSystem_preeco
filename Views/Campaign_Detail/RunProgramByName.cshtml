@@ -1,0 +1,259 @@
+﻿﻿@model  IEnumerable<PreecoLuckyDraw.Models.CAMPAIGN_DETAIL>
+
+@{
+    ViewBag.Title = Session["NAME"];
+    Layout = "~/Views/Shared/_LayoutProgram.cshtml";
+}
+
+<link href="~/Assets/css/styles.css" rel="stylesheet" />
+
+<audio id="drawAudio" loop>
+    <source src="~/Assets/img/spin.mp3" type="audio/mp3">
+    sound quay so
+</audio>
+<audio id="congraAudio">
+    <source src="~/Assets/img/phaohoa.mp3" type="audio/mp3">
+    sound congratulation
+</audio>
+<div id="phaohoa" class="pyro"><div class="before"></div><div class="after"></div></div>
+<div style="display: grid;">
+    <!--title-->
+    <div id="logoImage">
+        <img id="logo" />
+    </div>
+    <div class="container_title">
+        @if ((string)Session["NAME"] == "VIFON - Vòng Quay May Mắn")
+        {<div id="titlename" class="title" onclick="showhideTitle_vifon()">
+
+                <abbr id="titlecampaignvifon" title="Nhấp để thay đổi">
+                    @Session["NAME"]
+                </abbr>
+            </div>
+        }
+        else
+        {
+            <div id="titlename" class="title">
+                <abbr id="titlecampaign" title="Nhấp để thay đổi" onclick="showhideTitle()">
+                    @Session["NAME"]
+                </abbr>
+            </div>
+        }
+    </div>
+</div>
+<!--number-->
+<div class="number">
+    <div class="box1" style="height: fit-content;">
+        <div style="flex-wrap: nowrap; display: flex; justify-content: center">
+            <button style="min-width:90%" class="square" id="0" disabled></button>
+        </div>
+    </div>
+</div>
+<!--status-->
+<div class="flex_center">
+    <div class="box"></div>
+    <div class="box1" style="text-align:center">
+        <p id="status" onclick="showhide_input()">
+            Tìm người đoạt giải ....
+        </p>
+        <div style="display:flex;justify-content:center">
+            @if (Session["check"] == null)
+            {<div class="input-group">
+
+                    <p>Chưa có giải thưởng . Hãy <a href="/Campaign/Details/@Session["IDCAMPAIGN"]">thêm giải</a> vào chương trình</p>
+                </div>
+            }
+            else
+            {
+                    { Html.RenderAction("SelectPrizeCamp", "Campaign_Detail"); }
+                
+                <button id="startDraw" class="btn-run" onclick="startDrawN()">QUAY</button>
+                @*<button id="startDraw" class="btn-run" onclick="getJoiner()">QUAY</button>*@
+                <button id="submit" class="btn-run" style="display:none" onclick="drawName()">DỪNG</button>
+                <button id="myBtn" class="btn-run" onclick="Export()">KẾT QUẢ</button>
+
+            }
+
+        </div>
+
+
+
+    </div>
+
+</div>
+<!-- The Modal -->
+
+<div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div>
+            <span class="close">&times;</span>
+        </div>
+        <table class="table" id="table2excel">
+            <thead>
+                <tr>
+                    <th scope="col">Giải</th>
+                    <th scope="col">Tên</th>
+                    <th>SĐT</th>
+                    <th>Ngày đoạt giải</th>
+                </tr>
+            </thead>
+            <tbody id="result">
+                <!-- <tr></tr> -->
+            </tbody>
+
+        </table>
+        <button id="btnSave" class="btn-run" onclick="saveWinner()">Lưu</button>
+
+        <button class="btn-run" onclick="ExportExcel()">
+            Xuất File Excel
+
+        </button>
+    </div>
+</div>
+<div class="container " style="display: flex; justify-content: center; padding-top: 70px">
+    <div class="prize_mobile" style="display:flex;justify-content:center">
+        <iframe id="iddetail" height="350" width="550" title="Iframe Example" style="border:none">
+        </iframe>
+    </div>
+</div>
+<div id="modal-congrate" class="modal">
+    <div class="modal-content-congrate">
+        <div id="congrate">
+        </div>
+    </div>
+</div>
+<div>
+    @{ Html.RenderAction("listJoiners", "Campaign"); }
+</div>
+
+<div style="display:none">
+    <input value="@Session["BACKGROUND"]" id="BACKGROUND"></>
+    <input value="@Session["COLORBG"]" id="COLORBG"></>
+    <input value="@Session["COLORTEXT"]" id="COLORTEXT"></>
+    <input value="@Session["COLORBTN_BG"]" id="COLORBTN_BG"></>
+    <input value="@Session["COLORBTN_TEXT"]" id="COLORBTN_TEXT"></>
+    <input value="@Session["LOGO"]" id="LOGO"></>
+    <input value="@Session["NAME"]" id="nameCamp"></>
+    <input value="@Session["NAMECUS"]" id="nameCus"></>
+
+</div>
+<script src="~/Assets/js/scripts0.js"></script>
+<script>
+
+
+    //--------------------Giao dien ->
+    const bg = document.getElementById("bg");
+    const logo = document.getElementById("logo");
+    const btnrun = document.getElementById("myBtn").style;
+    const BACKGROUND = document.getElementById("BACKGROUND").value;
+    const COLORBG = document.getElementById("COLORBG").value;
+    const COLORTEXT = document.getElementById("COLORTEXT").value;
+    const COLORBTN_BG = document.getElementById("COLORBTN_BG").value;
+    const COLORBTN_TEXT = document.getElementById("COLORBTN_TEXT").value;
+    const LOGO = document.getElementById("LOGO").value;
+    bg.style.backgroundImage = 'url(' + BACKGROUND + ')';
+    console.log(LOGO)
+    if (LOGO == "/Assets/img/preeco.png") {
+        logo.style.display = "none";
+    }
+    else {
+        logo.src = LOGO;
+    }
+    const btnSubmit = document.getElementById("startDraw").style;
+    const btnselect = document.getElementById("IDDETAIL").style;
+    const btnStop = document.getElementById("submit").style;
+    btnStop.color = COLORBTN_TEXT; btnStop.backgroundColor = COLORBTN_BG;
+    btnSubmit.color = COLORBTN_TEXT; btnSubmit.backgroundColor = COLORBTN_BG;
+    btnselect.color = COLORBTN_BG; btnselect.backgroundColor = COLORBTN_TEXT;
+    btnrun.color = COLORBTN_TEXT; btnrun.backgroundColor = COLORBTN_BG;
+    const square0 = document.getElementById("0").style;
+    square0.color = COLORTEXT; square0.backgroundColor = COLORBG;
+
+    //--------------------Giao dien <-
+
+
+
+    function chosse() {
+        var imgprize = document.getElementById("iddetail");
+        var IDitemprize = $("#IDDETAIL option:selected").val();
+        if (IDitemprize == null || IDitemprize == "--Chọn giải--" || IDitemprize == " ") {
+            imgprize.style.display = "none";
+        }
+        imgprize.style.display = "block";
+        if (imgprize == null) {
+        }
+        imgprize.src = " /Campaign_detail/Detail/" + IDitemprize;
+
+    }
+    function saveWinner() {
+        var winners = new Array();
+        $("#table2excel tbody tr").each(function () {
+            var row = $(this);
+            var winner = {};
+            winner.NAME = row.find("TD").eq(1).html();
+            winner.PHONE = row.find("TD").eq(2).html();
+            winner.WINDATE = row.find("TD").eq(3).html();
+            winner.IDDETAIL = row.find("TD").eq(4).html();
+            winners.push(winner);
+        });
+        $.ajax({
+            type: "POST",
+            url: '/Winner/UpdateWinner',
+            data: JSON.stringify(winners),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (r) {
+                alert("Đã lưu thông tin vào database");
+            },
+            error: function (r) {
+                alert("Đã lưu thông tin vào database..");
+            }
+        });
+    };
+    function showhide_input() {
+        var iddetail = document.getElementById("IDDETAIL");
+        var btn_kq = document.getElementById("myBtn");
+
+        if (btn_kq.style.display == "none") {
+            iddetail.style.display = "block";
+            btn_kq.style.display = "block";
+        }
+        else {
+            iddetail.style.display = "none";
+            btn_kq.style.display = "none";
+        }
+
+    }
+    function getJoiner() {
+        //var winners = new Array();
+        //$("#table2excel tbody tr").each(function () {
+        //    var row = $(this);
+        //    var winner = {};
+        //    winner.NAME = row.find("TD").eq(1).html();
+        //    winner.PHONE = row.find("TD").eq(2).html();
+        //    winner.WINDATE = row.find("TD").eq(3).html();
+        //    winner.IDDETAIL = row.find("TD").eq(4).html();
+        //    winners.push(winner);
+        //});
+        $.ajax({
+            type: "GET",
+            url: '/Joiner/listJoiners',
+            dataType: "json",
+            success: function (data) {
+                //$.each(data, function (index, person) {
+                //    console.log(person);
+                //});
+                localStorage.setItem("dataDrawTestAPI", data);
+                var datafLocal = localStorage["dataDrawTestAPI"];
+                console.log(datafLocal)
+
+                //console.log("success", JSON.parse(datafLocal))
+                alert("Xử lý thông tin thành công.!!");
+            },
+            error: function (r) {
+                alert(r);
+            }
+        });
+    };
+</script>

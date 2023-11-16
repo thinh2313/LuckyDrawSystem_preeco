@@ -1,0 +1,165 @@
+﻿@model IEnumerable<PreecoLuckyDraw.Models.CAMPAIGN>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .btn-program, .btn-delete {
+        margin-bottom: 5px;
+    }
+    .dropdowncontent {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        padding: 12px 16px;
+        z-index: 1;
+    }
+    .dropdown:hover .dropdowncontent {
+        display: block;
+    }
+    
+</style>
+<div class="content-table">
+    
+    <div style="display:flex">
+        <h2 class="title-header" style="width: 95% ">CHƯƠNG TRÌNH</h2>
+        <h2 style="float: right; ">
+            <a href="/Campaign/Create" class="btn-create">+</a>
+
+        </h2>
+    </div>
+    <div class="box-container ">
+        <table class="table">
+            <tr>
+                <th>
+                    Tên chương trình
+                </th>
+                @if ((int)Session["STATUS"] == 1 || (int)Session["STATUS"] == 2313)
+                {
+                    <th>
+                        Tài khoản
+                    </th>
+                }
+
+                <th class="hidden_element_mobile">
+                    Ngày bắt đầu
+                </th>
+                <th class="hidden_element_mobile">
+                    Ngày kết thúc
+                </th>
+                <th style="text-align:center" class="hidden_element_mobile">
+                    Tình trạng
+                </th>
+                <th style="text-align:center" class="hidden_element_mobile">
+                    Số người đoạt giải
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <a href="/Campaign/Details/@item.IDCAMPAIGN"
+                           onclick="clear_localStorage()">
+                            @Html.DisplayFor(modelItem => item.NAME)
+
+                        </a>
+                    </td>
+                    @if ((int)Session["STATUS"] == 1 || (int)Session["STATUS"] == 2313)
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => item.USER.NAME)
+
+                        </td>
+                    }
+
+                    <td class="hidden_element_mobile">
+                        @Html.DisplayFor(modelItem => item.STARTDATE)
+                    </td>
+                    <td class="hidden_element_mobile">
+                        @Html.DisplayFor(modelItem => item.EXPIREDDATE)
+                    </td>
+                    @if (item.STATUS == true)
+                    {
+                        <td style="text-align:center" class="hidden_element_mobile">
+                            <input type="checkbox" checked class="myCheck" onclick='window.location.assign("/Campaign/UpdateGiftActive/@item.IDCAMPAIGN"), alert("Update Success")'>
+                        </td>
+
+                    }
+                    else if (item.STATUS == false || item.STATUS == null)
+                    {
+                        <td style="text-align:center" class="hidden_element_mobile">
+                            <input type="checkbox" class="myCheck" onclick='window.location.assign("/Campaign/UpdateGiftActive/@item.IDCAMPAIGN"), alert("Update Success")'>
+
+                        </td>
+                    }
+                    <td style="text-align:center" class="hidden_element_mobile">
+                        @Html.DisplayFor(modelItem => item.WINNERS)
+                    </td>
+                    <td class="gr-btn-campaign" style=" display: flex;flex-wrap: wrap;">
+                        <div class="dropdown">
+                            <button class="dropdown btn-program" >Chạy chương trình</button>
+                            <div class="dropdowncontent">
+                                <div style="display:flex;flex-direction:column">
+                                    <a class="btn-program" href="/Campaign_Detail/RunProgram/@item.IDCAMPAIGN" onclick="clear_localStorage()" target="_blank">Quay 10 ô</a>
+                                    <a class="btn-program" href="/Campaign_Detail/RunProgram3/@item.IDCAMPAIGN" onclick="clear_localStorage()" target="_blank">Quay 3 ô</a>
+                                    @if ((int)@Session["STATUS"] == 1 || (int)@Session["STATUS"] == 2 || (int)@Session["STATUS"] == 2313)
+                                    {
+                                        <a class="btn-program" href="/Campaign_Detail/ProgramVIFON/@item.IDCAMPAIGN" onclick="clear_localStorage()" target="_blank">VIFON</a>
+
+                                        <a class="btn-program" href="/Campaign_Detail/RunProgramHadStop/@item.IDCAMPAIGN" onclick="clear_localStorage()" target="_blank">Quay 10 ô(có nút dừng)</a>
+                                        <a class="btn-program" href="/Campaign_Detail/RunProgram8HadStop/@item.IDCAMPAIGN" onclick="clear_localStorage()" target="_blank">8 ô(Nestle)</a>
+                                        <a class="btn-program" href="/Campaign_Detail/RunProgram3HadStop/@item.IDCAMPAIGN" onclick="clear_localStorage()" target="_blank">3 ô(Nestle)</a>
+                                        <a class="btn-program" href="/Campaign_Detail/RunProgram4HadStop/@item.IDCAMPAIGN" onclick="clear_localStorage()" target="_blank">Charity 4 ô(Nestle)</a>
+                                        if ((int)@Session["STATUS"] == 2313)
+                                        { <a class="btn-program" href="/Campaign_Detail/RunProgramByName/@item.IDCAMPAIGN" onclick="clear_localStorage()" target="_blank">Quay theo name</a>
+
+                                            <a class="btn-delete" href="/Campaign/Delete/@item.IDCAMPAIGN">Xóa</a>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                         </div> <span class="wall">|</span>
+                            <a class="btn-program" href="/Campaign/Edit/@item.IDCAMPAIGN">Cấu hình</a>
+                            @if ((int)@Session["STATUS"] == 3)
+                            {
+                                <span class="wall">|</span>
+                                <a class="btn-delete" onclick="contact()">Xóa</a>
+                            }
+</td>
+                </tr>
+
+            }
+
+        </table>
+    </div>
+</div>
+<script>
+   
+    var dropdowncontent = "dropdown-content";
+    let numofdropdowncontent
+    function contact() {
+        alert("Liên hệ PreecoStudio để được tư vấn dịch vụ")
+    }
+    function clear_localStorage() {
+        //localStorage.clear();
+        localStorage.removeItem('DataLuckyDraw');
+        localStorage.removeItem('DataLuckyDrawhadStop');
+
+        
+    }
+    
+        function dropdownlist()
+        {
+
+            const styledropdown = document.getElementById("dropdowncontent").style;
+            if (styledropdown.display == "none") {
+                styledropdown.style.display = "block";
+            } else {
+                styledropdown.display = "none"
+            }
+        }
+</script>

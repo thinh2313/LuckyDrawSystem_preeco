@@ -1,0 +1,108 @@
+﻿@model PreecoLuckyDraw.Models.USER
+
+@{
+    ViewBag.Title = "Login";
+    Layout = null;
+
+}
+<a href="~/Home/Index"><h2>Lucky Draw</h2></a>
+
+<body>
+    @using (Html.BeginForm("LoginAccount", "Login", FormMethod.Post))
+    {
+
+        <div class="limiter">
+            <div class="container-login100">
+                <div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
+                    <form class="login100-form validate-form">
+                        <span class="login100-form-title p-b-49">
+                            Login
+                        </span>
+                        <fieldset>
+                            <div class="mgin">
+                                <div class="wrap-input100 validate-input" data-validate="Email is required">
+                                    
+                                    @Html.TextBoxFor(model => model.PHONE, new { @class = "input100", @type = "NUMBER", @name = "username", @placeholder = "Type your phone number", })
+                                    @*<span class="focus-input100" data-symbol="&#xf190;"></span>*@
+                                </div>
+                                <div class="text-danger">@Html.ValidationMessageFor(model => model.PHONE)@ViewBag.ErrorInfo</div>
+
+                            </div>
+                            <div class="mgin">
+                                <div class="wrap-input100 validate-input" data-validate="Password is required">
+
+                                    @Html.TextBoxFor(model => model.PASSWORD, new { @class = "input100", @type = "password", @name = "password", @placeholder = "Type your password", })
+                                    @*<span class="focus-input100" data-symbol="&#xf190;"></span>*@
+                                </div>
+                                <div class="text-danger">@Html.ValidationMessageFor(model => model.PASSWORD)@ViewBag.ErrorPass </div>
+                            </div>
+                <div class="container-login100-form-btn">
+                    <div class="wrap-login100-form-btn">
+                        <div class="login100-form-bgbtn"></div>
+                        <button class="login100-form-btn">
+                            Login
+                        </button>
+                    </div>
+                </div>
+
+                <div class="txt1 text-center p-t-54 p-b-20">
+                    <span>
+                        Or <a href="@Url.Action("RegisterUser", "Login")">
+                            <strong>  SignUp  </strong>
+                        </a>|
+                        <a href="@Url.Action("Index", "Home")">
+                            Quay ve trang chu
+
+                        </a>
+                    </span>
+
+                </div>
+                <div class="flex-col-c p-t-155">
+
+                </div>
+                </fieldset>
+                </form>
+            </div>
+            </div>
+        </div>
+
+        }
+
+</body>
+
+<link rel="icon" type="image/png" href="~/Assets/login/images/icons/favicon.ico" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="~/Assets/login/vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="~/Assets/login/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="~/Assets/login/fonts/iconic/css/material-design-iconic-font.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="~/Assets/login/vendor/animate/animate.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="~/Assets/login/vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="~/Assets/login/vendor/animsition/css/animsition.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="~/Assets/login/vendor/select2/select2.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="~/Assets/login/vendor/daterangepicker/daterangepicker.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="~/Assets/login/css/util.css">
+<link rel="stylesheet" type="text/css" href="~/Assets/login/css/main.css">
+<!--===============================================================================================-->
+<script src="~/Assets/login/vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+<script src="~/Assets/login/vendor/animsition/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+<script src="~/Assets/login/vendor/bootstrap/js/popper.js"></script>
+<script src="~/Assets/login/vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+<script src="~/Assets/login/vendor/select2/select2.min.js"></script>
+<!--===============================================================================================-->
+<script src="~/Assets/login/vendor/daterangepicker/moment.min.js"></script>
+<script src="~/Assets/login/vendor/daterangepicker/daterangepicker.js"></script>
+<!--===============================================================================================-->
+<script src="~/Assets/login/vendor/countdowntime/countdowntime.js"></script>
+<!--===============================================================================================-->
+<script src="~/Assets/login/js/main.js"></script>

@@ -1,0 +1,5 @@
+﻿@model PreecoLuckyDraw.Models.CAMPAIGN_DETAIL
+
+@Html.DropDownListFor(model => model.IDDETAIL,
+new SelectList(Model.listCampDetail.OrderBy(model => model.PRIZE.NAME), "IDDETAIL", "PRIZE.NAME"), new { @onchange = "chosse()", @class = "bubble",@style= "margin: 10px 7px 0px 7px; appearance: none;" })
+@*new SelectList(Model.listCampDetail.OrderBy(model => model.PRIZE.NAME), "IDDETAIL", "PRIZE.NAME"), new { @onchange = "chosse()",@class="btn-run" })*@

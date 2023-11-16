@@ -1,0 +1,5 @@
+﻿@model PreecoLuckyDraw.Models.PRIZE
+
+@Html.DropDownListFor(model => model.IDPRIZE,
+new SelectList(Model.listPrize.OrderBy(model => model.NAME), "IDPRIZE", "NAME"), "--Chọn giải--")
+

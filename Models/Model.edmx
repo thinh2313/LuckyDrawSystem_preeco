@@ -1,0 +1,635 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DbPreecoLuckyDrawModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CAMPAIGN">
+          <Key>
+            <PropertyRef Name="IDCAMPAIGN" />
+          </Key>
+          <Property Name="IDCAMPAIGN" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NAME" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="STATUS" Type="bit" />
+          <Property Name="STARTDATE" Type="datetime" />
+          <Property Name="EXPIREDDATE" Type="datetime" />
+          <Property Name="CREATEDATE" Type="datetime" />
+          <Property Name="WINNERS" Type="int" />
+          <Property Name="LOGO" Type="text" />
+          <Property Name="BACKGROUND" Type="text" />
+          <Property Name="COLORTEXT" Type="text" />
+          <Property Name="COLORBG" Type="text" />
+          <Property Name="COLORBTN_BG" Type="text" />
+          <Property Name="COLORBTN_TEXT" Type="text" />
+          <Property Name="ID" Type="int" />
+        </EntityType>
+        <EntityType Name="CAMPAIGN_DETAIL">
+          <Key>
+            <PropertyRef Name="IDDETAIL" />
+          </Key>
+          <Property Name="IDDETAIL" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDCAMPAIGN" Type="int" Nullable="false" />
+          <Property Name="IDPRIZE" Type="int" Nullable="false" />
+          <Property Name="IDGIFT" Type="int" Nullable="false" />
+          <Property Name="USAGELIMIT" Type="int" />
+          <Property Name="WINDATE" Type="date" />
+        </EntityType>
+        <EntityType Name="EMPLOYEE">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="LASTNAME" Type="nvarchar" MaxLength="30" />
+          <Property Name="FIRSTNAME" Type="nvarchar" MaxLength="30" />
+          <Property Name="BU" Type="nvarchar" MaxLength="30" />
+          <Property Name="TIMEDRAW" Type="int" />
+          <Property Name="GIFT" Type="nvarchar" MaxLength="50" />
+          <Property Name="RESULT" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="GIFT">
+          <Key>
+            <PropertyRef Name="IDGIFT" />
+          </Key>
+          <Property Name="IDGIFT" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NAME" Type="nvarchar" MaxLength="30" />
+          <Property Name="IMAGE" Type="text" />
+          <Property Name="CREATEDATE" Type="datetime" />
+          <Property Name="ID" Type="int" />
+        </EntityType>
+        <EntityType Name="JOINER">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDJOINER" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="PHONE" Type="char" MaxLength="10" />
+          <Property Name="NAME" Type="nvarchar" MaxLength="50" />
+          <Property Name="DATEOFBIRTH" Type="varchar" MaxLength="15" />
+          <Property Name="EMAIL" Type="varchar" MaxLength="30" />
+          <Property Name="ADDRESS" Type="nvarchar" MaxLength="100" />
+          <Property Name="IDCAMPAIGN" Type="int" />
+        </EntityType>
+        <EntityType Name="LUCKYNUMBER">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="NUMB" Type="int" />
+          <Property Name="CONTENTS" Type="nvarchar" MaxLength="100" />
+          <Property Name="IMAGE" Type="text" />
+          <Property Name="STATUS" Type="bit" />
+          <Property Name="NOTE" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="PRIZE">
+          <Key>
+            <PropertyRef Name="IDPRIZE" />
+          </Key>
+          <Property Name="IDPRIZE" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NAME" Type="nvarchar" MaxLength="20" />
+          <Property Name="CREATEDATE" Type="datetime" />
+        </EntityType>
+        <EntityType Name="USERS">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NAME" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="DATEOFBIRTH" Type="varchar" MaxLength="15" />
+          <Property Name="PHONE" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="STATUSS" Type="int" />
+          <Property Name="PASSWORD" Type="varchar" MaxLength="17" />
+        </EntityType>
+        <EntityType Name="WINNER">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PHONE" Type="varchar" MaxLength="10" />
+          <Property Name="IDDETAIL" Type="int" Nullable="false" />
+          <Property Name="NAME" Type="nvarchar" MaxLength="30" />
+          <Property Name="DATEOFBIRTH" Type="varchar" MaxLength="15" />
+          <Property Name="ADDRESS" Type="nvarchar" MaxLength="100" />
+          <Property Name="EMAIL" Type="varchar" MaxLength="30" />
+          <Property Name="WINDATE" Type="varchar" MaxLength="15" />
+        </EntityType>
+        <Association Name="FK_CAMPAIGN_USERS">
+          <End Role="USERS" Type="Self.USERS" Multiplicity="0..1" />
+          <End Role="CAMPAIGN" Type="Self.CAMPAIGN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USERS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CAMPAIGN">
+              <PropertyRef Name="ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DETAIL_CAMPAIGN">
+          <End Role="CAMPAIGN" Type="Self.CAMPAIGN" Multiplicity="1" />
+          <End Role="CAMPAIGN_DETAIL" Type="Self.CAMPAIGN_DETAIL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAMPAIGN">
+              <PropertyRef Name="IDCAMPAIGN" />
+            </Principal>
+            <Dependent Role="CAMPAIGN_DETAIL">
+              <PropertyRef Name="IDCAMPAIGN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DETAIL_GIFT">
+          <End Role="GIFT" Type="Self.GIFT" Multiplicity="1" />
+          <End Role="CAMPAIGN_DETAIL" Type="Self.CAMPAIGN_DETAIL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GIFT">
+              <PropertyRef Name="IDGIFT" />
+            </Principal>
+            <Dependent Role="CAMPAIGN_DETAIL">
+              <PropertyRef Name="IDGIFT" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DETAIL_PRIZE">
+          <End Role="PRIZE" Type="Self.PRIZE" Multiplicity="1" />
+          <End Role="CAMPAIGN_DETAIL" Type="Self.CAMPAIGN_DETAIL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRIZE">
+              <PropertyRef Name="IDPRIZE" />
+            </Principal>
+            <Dependent Role="CAMPAIGN_DETAIL">
+              <PropertyRef Name="IDPRIZE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GIFT_USERS">
+          <End Role="USERS" Type="Self.USERS" Multiplicity="0..1" />
+          <End Role="GIFT" Type="Self.GIFT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USERS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="GIFT">
+              <PropertyRef Name="ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_JOINER_CAMPAIGN">
+          <End Role="CAMPAIGN" Type="Self.CAMPAIGN" Multiplicity="0..1" />
+          <End Role="JOINER" Type="Self.JOINER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAMPAIGN">
+              <PropertyRef Name="IDCAMPAIGN" />
+            </Principal>
+            <Dependent Role="JOINER">
+              <PropertyRef Name="IDCAMPAIGN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WINNER_DETAILCP">
+          <End Role="CAMPAIGN_DETAIL" Type="Self.CAMPAIGN_DETAIL" Multiplicity="1" />
+          <End Role="WINNER" Type="Self.WINNER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAMPAIGN_DETAIL">
+              <PropertyRef Name="IDDETAIL" />
+            </Principal>
+            <Dependent Role="WINNER">
+              <PropertyRef Name="IDDETAIL" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DbPreecoLuckyDrawModelStoreContainer">
+          <EntitySet Name="CAMPAIGN" EntityType="Self.CAMPAIGN" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CAMPAIGN_DETAIL" EntityType="Self.CAMPAIGN_DETAIL" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EMPLOYEE" EntityType="Self.EMPLOYEE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GIFT" EntityType="Self.GIFT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="JOINER" EntityType="Self.JOINER" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LUCKYNUMBER" EntityType="Self.LUCKYNUMBER" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PRIZE" EntityType="Self.PRIZE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="USERS" EntityType="Self.USERS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WINNER" EntityType="Self.WINNER" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_CAMPAIGN_USERS" Association="Self.FK_CAMPAIGN_USERS">
+            <End Role="USERS" EntitySet="USERS" />
+            <End Role="CAMPAIGN" EntitySet="CAMPAIGN" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DETAIL_CAMPAIGN" Association="Self.FK_DETAIL_CAMPAIGN">
+            <End Role="CAMPAIGN" EntitySet="CAMPAIGN" />
+            <End Role="CAMPAIGN_DETAIL" EntitySet="CAMPAIGN_DETAIL" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DETAIL_GIFT" Association="Self.FK_DETAIL_GIFT">
+            <End Role="GIFT" EntitySet="GIFT" />
+            <End Role="CAMPAIGN_DETAIL" EntitySet="CAMPAIGN_DETAIL" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DETAIL_PRIZE" Association="Self.FK_DETAIL_PRIZE">
+            <End Role="PRIZE" EntitySet="PRIZE" />
+            <End Role="CAMPAIGN_DETAIL" EntitySet="CAMPAIGN_DETAIL" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GIFT_USERS" Association="Self.FK_GIFT_USERS">
+            <End Role="USERS" EntitySet="USERS" />
+            <End Role="GIFT" EntitySet="GIFT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_JOINER_CAMPAIGN" Association="Self.FK_JOINER_CAMPAIGN">
+            <End Role="CAMPAIGN" EntitySet="CAMPAIGN" />
+            <End Role="JOINER" EntitySet="JOINER" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WINNER_DETAILCP" Association="Self.FK_WINNER_DETAILCP">
+            <End Role="CAMPAIGN_DETAIL" EntitySet="CAMPAIGN_DETAIL" />
+            <End Role="WINNER" EntitySet="WINNER" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DbPreecoLuckyDrawModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CAMPAIGN">
+          <Key>
+            <PropertyRef Name="IDCAMPAIGN" />
+          </Key>
+          <Property Name="IDCAMPAIGN" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NAME" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="STATUS" Type="Boolean" />
+          <Property Name="STARTDATE" Type="DateTime" Precision="3" />
+          <Property Name="EXPIREDDATE" Type="DateTime" Precision="3" />
+          <Property Name="CREATEDATE" Type="DateTime" Precision="3" />
+          <Property Name="WINNERS" Type="Int32" />
+          <Property Name="LOGO" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="BACKGROUND" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="COLORTEXT" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="COLORBG" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="COLORBTN_BG" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="COLORBTN_TEXT" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ID" Type="Int32" />
+          <NavigationProperty Name="USER" Relationship="Self.FK_CAMPAIGN_USERS" FromRole="CAMPAIGN" ToRole="USERS" />
+          <NavigationProperty Name="CAMPAIGN_DETAIL" Relationship="Self.FK_DETAIL_CAMPAIGN" FromRole="CAMPAIGN" ToRole="CAMPAIGN_DETAIL" />
+          <NavigationProperty Name="JOINERs" Relationship="Self.FK_JOINER_CAMPAIGN" FromRole="CAMPAIGN" ToRole="JOINER" />
+        </EntityType>
+        <EntityType Name="CAMPAIGN_DETAIL">
+          <Key>
+            <PropertyRef Name="IDDETAIL" />
+          </Key>
+          <Property Name="IDDETAIL" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDCAMPAIGN" Type="Int32" Nullable="false" />
+          <Property Name="IDPRIZE" Type="Int32" Nullable="false" />
+          <Property Name="IDGIFT" Type="Int32" Nullable="false" />
+          <Property Name="USAGELIMIT" Type="Int32" />
+          <Property Name="WINDATE" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="CAMPAIGN" Relationship="Self.FK_DETAIL_CAMPAIGN" FromRole="CAMPAIGN_DETAIL" ToRole="CAMPAIGN" />
+          <NavigationProperty Name="GIFT" Relationship="Self.FK_DETAIL_GIFT" FromRole="CAMPAIGN_DETAIL" ToRole="GIFT" />
+          <NavigationProperty Name="PRIZE" Relationship="Self.FK_DETAIL_PRIZE" FromRole="CAMPAIGN_DETAIL" ToRole="PRIZE" />
+          <NavigationProperty Name="WINNERs" Relationship="Self.FK_WINNER_DETAILCP" FromRole="CAMPAIGN_DETAIL" ToRole="WINNER" />
+        </EntityType>
+        <EntityType Name="EMPLOYEE">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LASTNAME" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="FIRSTNAME" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="BU" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="TIMEDRAW" Type="Int32" />
+          <Property Name="GIFT" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RESULT" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="GIFT">
+          <Key>
+            <PropertyRef Name="IDGIFT" />
+          </Key>
+          <Property Name="IDGIFT" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NAME" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="IMAGE" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CREATEDATE" Type="DateTime" Precision="3" />
+          <Property Name="ID" Type="Int32" />
+          <NavigationProperty Name="CAMPAIGN_DETAIL" Relationship="Self.FK_DETAIL_GIFT" FromRole="GIFT" ToRole="CAMPAIGN_DETAIL" />
+          <NavigationProperty Name="USER" Relationship="Self.FK_GIFT_USERS" FromRole="GIFT" ToRole="USERS" />
+        </EntityType>
+        <EntityType Name="JOINER">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDJOINER" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PHONE" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DATEOFBIRTH" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="EMAIL" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ADDRESS" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="IDCAMPAIGN" Type="Int32" />
+          <NavigationProperty Name="CAMPAIGN" Relationship="Self.FK_JOINER_CAMPAIGN" FromRole="JOINER" ToRole="CAMPAIGN" />
+        </EntityType>
+        <EntityType Name="LUCKYNUMBER">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="NUMB" Type="Int32" />
+          <Property Name="CONTENTS" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="IMAGE" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="STATUS" Type="Boolean" />
+          <Property Name="NOTE" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="PRIZE">
+          <Key>
+            <PropertyRef Name="IDPRIZE" />
+          </Key>
+          <Property Name="IDPRIZE" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NAME" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="CREATEDATE" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="CAMPAIGN_DETAIL" Relationship="Self.FK_DETAIL_PRIZE" FromRole="PRIZE" ToRole="CAMPAIGN_DETAIL" />
+        </EntityType>
+        <EntityType Name="USER">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NAME" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DATEOFBIRTH" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="PHONE" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="STATUSS" Type="Int32" />
+          <Property Name="PASSWORD" Type="String" MaxLength="17" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CAMPAIGNs" Relationship="Self.FK_CAMPAIGN_USERS" FromRole="USERS" ToRole="CAMPAIGN" />
+          <NavigationProperty Name="GIFTs" Relationship="Self.FK_GIFT_USERS" FromRole="USERS" ToRole="GIFT" />
+        </EntityType>
+        <EntityType Name="WINNER">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PHONE" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="IDDETAIL" Type="Int32" Nullable="false" />
+          <Property Name="NAME" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="DATEOFBIRTH" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="ADDRESS" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="EMAIL" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="WINDATE" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CAMPAIGN_DETAIL" Relationship="Self.FK_WINNER_DETAILCP" FromRole="WINNER" ToRole="CAMPAIGN_DETAIL" />
+        </EntityType>
+        <Association Name="FK_CAMPAIGN_USERS">
+          <End Role="USERS" Type="Self.USER" Multiplicity="0..1" />
+          <End Role="CAMPAIGN" Type="Self.CAMPAIGN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USERS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CAMPAIGN">
+              <PropertyRef Name="ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DETAIL_CAMPAIGN">
+          <End Role="CAMPAIGN" Type="Self.CAMPAIGN" Multiplicity="1" />
+          <End Role="CAMPAIGN_DETAIL" Type="Self.CAMPAIGN_DETAIL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAMPAIGN">
+              <PropertyRef Name="IDCAMPAIGN" />
+            </Principal>
+            <Dependent Role="CAMPAIGN_DETAIL">
+              <PropertyRef Name="IDCAMPAIGN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_JOINER_CAMPAIGN">
+          <End Role="CAMPAIGN" Type="Self.CAMPAIGN" Multiplicity="0..1" />
+          <End Role="JOINER" Type="Self.JOINER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAMPAIGN">
+              <PropertyRef Name="IDCAMPAIGN" />
+            </Principal>
+            <Dependent Role="JOINER">
+              <PropertyRef Name="IDCAMPAIGN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DETAIL_GIFT">
+          <End Role="GIFT" Type="Self.GIFT" Multiplicity="1" />
+          <End Role="CAMPAIGN_DETAIL" Type="Self.CAMPAIGN_DETAIL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GIFT">
+              <PropertyRef Name="IDGIFT" />
+            </Principal>
+            <Dependent Role="CAMPAIGN_DETAIL">
+              <PropertyRef Name="IDGIFT" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DETAIL_PRIZE">
+          <End Role="PRIZE" Type="Self.PRIZE" Multiplicity="1" />
+          <End Role="CAMPAIGN_DETAIL" Type="Self.CAMPAIGN_DETAIL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRIZE">
+              <PropertyRef Name="IDPRIZE" />
+            </Principal>
+            <Dependent Role="CAMPAIGN_DETAIL">
+              <PropertyRef Name="IDPRIZE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WINNER_DETAILCP">
+          <End Role="CAMPAIGN_DETAIL" Type="Self.CAMPAIGN_DETAIL" Multiplicity="1" />
+          <End Role="WINNER" Type="Self.WINNER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CAMPAIGN_DETAIL">
+              <PropertyRef Name="IDDETAIL" />
+            </Principal>
+            <Dependent Role="WINNER">
+              <PropertyRef Name="IDDETAIL" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GIFT_USERS">
+          <End Role="USERS" Type="Self.USER" Multiplicity="0..1" />
+          <End Role="GIFT" Type="Self.GIFT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USERS">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="GIFT">
+              <PropertyRef Name="ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DbPreecoLuckyDrawEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CAMPAIGNs" EntityType="Self.CAMPAIGN" />
+          <EntitySet Name="CAMPAIGN_DETAIL" EntityType="Self.CAMPAIGN_DETAIL" />
+          <EntitySet Name="EMPLOYEEs" EntityType="Self.EMPLOYEE" />
+          <EntitySet Name="GIFTs" EntityType="Self.GIFT" />
+          <EntitySet Name="JOINERs" EntityType="Self.JOINER" />
+          <EntitySet Name="LUCKYNUMBERs" EntityType="Self.LUCKYNUMBER" />
+          <EntitySet Name="PRIZEs" EntityType="Self.PRIZE" />
+          <EntitySet Name="USERS" EntityType="Self.USER" />
+          <EntitySet Name="WINNERs" EntityType="Self.WINNER" />
+          <AssociationSet Name="FK_CAMPAIGN_USERS" Association="Self.FK_CAMPAIGN_USERS">
+            <End Role="USERS" EntitySet="USERS" />
+            <End Role="CAMPAIGN" EntitySet="CAMPAIGNs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DETAIL_CAMPAIGN" Association="Self.FK_DETAIL_CAMPAIGN">
+            <End Role="CAMPAIGN" EntitySet="CAMPAIGNs" />
+            <End Role="CAMPAIGN_DETAIL" EntitySet="CAMPAIGN_DETAIL" />
+          </AssociationSet>
+          <AssociationSet Name="FK_JOINER_CAMPAIGN" Association="Self.FK_JOINER_CAMPAIGN">
+            <End Role="CAMPAIGN" EntitySet="CAMPAIGNs" />
+            <End Role="JOINER" EntitySet="JOINERs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DETAIL_GIFT" Association="Self.FK_DETAIL_GIFT">
+            <End Role="GIFT" EntitySet="GIFTs" />
+            <End Role="CAMPAIGN_DETAIL" EntitySet="CAMPAIGN_DETAIL" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DETAIL_PRIZE" Association="Self.FK_DETAIL_PRIZE">
+            <End Role="PRIZE" EntitySet="PRIZEs" />
+            <End Role="CAMPAIGN_DETAIL" EntitySet="CAMPAIGN_DETAIL" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WINNER_DETAILCP" Association="Self.FK_WINNER_DETAILCP">
+            <End Role="CAMPAIGN_DETAIL" EntitySet="CAMPAIGN_DETAIL" />
+            <End Role="WINNER" EntitySet="WINNERs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GIFT_USERS" Association="Self.FK_GIFT_USERS">
+            <End Role="USERS" EntitySet="USERS" />
+            <End Role="GIFT" EntitySet="GIFTs" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DbPreecoLuckyDrawModelStoreContainer" CdmEntityContainer="DbPreecoLuckyDrawEntities">
+          <EntitySetMapping Name="CAMPAIGNs">
+            <EntityTypeMapping TypeName="DbPreecoLuckyDrawModel.CAMPAIGN">
+              <MappingFragment StoreEntitySet="CAMPAIGN">
+                <ScalarProperty Name="IDCAMPAIGN" ColumnName="IDCAMPAIGN" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+                <ScalarProperty Name="STARTDATE" ColumnName="STARTDATE" />
+                <ScalarProperty Name="EXPIREDDATE" ColumnName="EXPIREDDATE" />
+                <ScalarProperty Name="CREATEDATE" ColumnName="CREATEDATE" />
+                <ScalarProperty Name="WINNERS" ColumnName="WINNERS" />
+                <ScalarProperty Name="LOGO" ColumnName="LOGO" />
+                <ScalarProperty Name="BACKGROUND" ColumnName="BACKGROUND" />
+                <ScalarProperty Name="COLORTEXT" ColumnName="COLORTEXT" />
+                <ScalarProperty Name="COLORBG" ColumnName="COLORBG" />
+                <ScalarProperty Name="COLORBTN_BG" ColumnName="COLORBTN_BG" />
+                <ScalarProperty Name="COLORBTN_TEXT" ColumnName="COLORBTN_TEXT" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CAMPAIGN_DETAIL">
+            <EntityTypeMapping TypeName="DbPreecoLuckyDrawModel.CAMPAIGN_DETAIL">
+              <MappingFragment StoreEntitySet="CAMPAIGN_DETAIL">
+                <ScalarProperty Name="IDDETAIL" ColumnName="IDDETAIL" />
+                <ScalarProperty Name="IDCAMPAIGN" ColumnName="IDCAMPAIGN" />
+                <ScalarProperty Name="IDPRIZE" ColumnName="IDPRIZE" />
+                <ScalarProperty Name="IDGIFT" ColumnName="IDGIFT" />
+                <ScalarProperty Name="USAGELIMIT" ColumnName="USAGELIMIT" />
+                <ScalarProperty Name="WINDATE" ColumnName="WINDATE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EMPLOYEEs">
+            <EntityTypeMapping TypeName="DbPreecoLuckyDrawModel.EMPLOYEE">
+              <MappingFragment StoreEntitySet="EMPLOYEE">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="LASTNAME" ColumnName="LASTNAME" />
+                <ScalarProperty Name="FIRSTNAME" ColumnName="FIRSTNAME" />
+                <ScalarProperty Name="BU" ColumnName="BU" />
+                <ScalarProperty Name="TIMEDRAW" ColumnName="TIMEDRAW" />
+                <ScalarProperty Name="GIFT" ColumnName="GIFT" />
+                <ScalarProperty Name="RESULT" ColumnName="RESULT" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GIFTs">
+            <EntityTypeMapping TypeName="DbPreecoLuckyDrawModel.GIFT">
+              <MappingFragment StoreEntitySet="GIFT">
+                <ScalarProperty Name="IDGIFT" ColumnName="IDGIFT" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="IMAGE" ColumnName="IMAGE" />
+                <ScalarProperty Name="CREATEDATE" ColumnName="CREATEDATE" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="JOINERs">
+            <EntityTypeMapping TypeName="DbPreecoLuckyDrawModel.JOINER">
+              <MappingFragment StoreEntitySet="JOINER">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="IDJOINER" ColumnName="IDJOINER" />
+                <ScalarProperty Name="PHONE" ColumnName="PHONE" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="DATEOFBIRTH" ColumnName="DATEOFBIRTH" />
+                <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+                <ScalarProperty Name="ADDRESS" ColumnName="ADDRESS" />
+                <ScalarProperty Name="IDCAMPAIGN" ColumnName="IDCAMPAIGN" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LUCKYNUMBERs">
+            <EntityTypeMapping TypeName="DbPreecoLuckyDrawModel.LUCKYNUMBER">
+              <MappingFragment StoreEntitySet="LUCKYNUMBER">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="NUMB" ColumnName="NUMB" />
+                <ScalarProperty Name="CONTENTS" ColumnName="CONTENTS" />
+                <ScalarProperty Name="IMAGE" ColumnName="IMAGE" />
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+                <ScalarProperty Name="NOTE" ColumnName="NOTE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PRIZEs">
+            <EntityTypeMapping TypeName="DbPreecoLuckyDrawModel.PRIZE">
+              <MappingFragment StoreEntitySet="PRIZE">
+                <ScalarProperty Name="IDPRIZE" ColumnName="IDPRIZE" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="CREATEDATE" ColumnName="CREATEDATE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="USERS">
+            <EntityTypeMapping TypeName="DbPreecoLuckyDrawModel.USER">
+              <MappingFragment StoreEntitySet="USERS">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="DATEOFBIRTH" ColumnName="DATEOFBIRTH" />
+                <ScalarProperty Name="PHONE" ColumnName="PHONE" />
+                <ScalarProperty Name="STATUSS" ColumnName="STATUSS" />
+                <ScalarProperty Name="PASSWORD" ColumnName="PASSWORD" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WINNERs">
+            <EntityTypeMapping TypeName="DbPreecoLuckyDrawModel.WINNER">
+              <MappingFragment StoreEntitySet="WINNER">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="PHONE" ColumnName="PHONE" />
+                <ScalarProperty Name="IDDETAIL" ColumnName="IDDETAIL" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="DATEOFBIRTH" ColumnName="DATEOFBIRTH" />
+                <ScalarProperty Name="ADDRESS" ColumnName="ADDRESS" />
+                <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+                <ScalarProperty Name="WINDATE" ColumnName="WINDATE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

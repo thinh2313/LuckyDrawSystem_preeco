@@ -1,0 +1,475 @@
+﻿@model PreecoLuckyDraw.Models.CAMPAIGN
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    input[type=file]:before {
+        color: #4da896;
+        border: 1px solid #4da896;
+        border-radius: 10px;
+    }
+    input[type=file] {
+        color: #4da896;
+    }
+    td , th{
+        padding-bottom:5px;
+    }
+    select{
+        padding:5px;
+        cursor:pointer;
+        text-align:center;
+
+    }
+    #charitymodal {
+        display: flex;
+        flex-direction: column;
+        border: 2px solid black;
+        padding: 20px 35px;
+    }
+    
+    .charityinput {
+        margin: 5px;
+        padding: 5px 10px;
+    }
+</style>
+<script>
+    function updateCharity() {
+        //$("#btncharity").click(function () {
+        
+        var id = $("#idcharity").val();
+        var name = $("#namecharity").val();
+        var min = $("#mincharity").val();
+        var max = $("#maxcharity").val();
+        var address = $("#addresscharity").val();
+
+        var formdata = new FormData();
+        formdata.append("idcharity", id);
+        formdata.append("namecharity", name);
+        formdata.append("mincharity", min);
+        formdata.append("maxcharity", max);
+        formdata.append("addresscharity", address);
+        console.log(formdata);
+
+        const x = '/Campaign/NestleCharity/?min=' + min + '&max=' + max + '&name=' + name + '&id=' + id + '&addresss=' + address;
+        //const x = '/Campaign/NestleCharity/?min=1&max=10&name=name&id=id&addresss=address';
+        console.log("url", x);
+        $.ajax({
+            url: x,
+            type: "POST",
+            contentType: false, // Not to set any content header
+            processData: false, // Not to process data
+            data: formdata,
+            async: false,
+            success: function (result) {
+                //success
+                alert("Đã cập nhật thành công");
+                //document.getElementById("").style.display = "block";
+                window.location.reload();
+
+            },
+            error: function (err) {
+                //document.getElementById("").style.display = "block";
+
+                alert("Vui lòng điền đầy đủ thông tin");
+            }
+        });
+    }
+    //});
+    function closeModal() {
+        document.getElementById("myModal").style.display = "none";
+        document.getElementById("joinModal").style.display = "none";
+        document.getElementById("charitymodal").style.display = "none";
+        document.getElementById("charitynumbermodal").style.display = "none";
+
+
+    }
+    //window.onload = function () {
+    //    var mb = document.getElementById("uploads");
+    //    addEventListener('change', handleFileSelect, false);
+    //}
+
+    //var ExcelToJSON = function () {
+
+    //    this.parseExcel = function (file) {
+    //        var reader = new FileReader();
+
+    //        reader.onload = function (e) {
+    //            var data = e.target.result;
+    //            var workbook = XLSX.read(data, {
+    //                type: 'binary'
+    //            });
+    //            workbook.SheetNames.forEach(function (sheetName) {
+    //                var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+    //                var json_object = JSON.stringify(XL_row_object);
+    //                console.log(JSON.parse(json_object));
+    //                jQuery('#xlx_json').val(json_object);
+    //            })
+    //        };
+
+    //        reader.onerror = function (ex) {
+    //            console.log(ex);
+    //        };
+
+    //        reader.readAsBinaryString(file);
+    //    };
+    //};
+
+    //function handleFileSelect(evt) {
+
+    //    var files = evt.target.files;
+    //    var xl2json = new ExcelToJSON();
+    //    xl2json.parseExcel(files[0]);
+    //}
+</script>
+<div class="content-table">
+    <div class="title-campaign">
+        <h2>
+            @Html.DisplayFor(model => model.NAME)
+        </h2>
+        <div class="btnbar">
+            <button class=" tablink active title-campaign-item" onclick="openCity(event,'Dashboard')">Chi tiết chương trình</button>
+            <button class=" tablink title-campaign-item" onclick="openCity(event,'Prize')">Giải thưởng</button>
+            <button class=" tablink title-campaign-item" onclick="openCity(event,'Joiner')">Danh sách người tham dự</button>
+          
+            <a style="float:right" class="btn-program title-campaign-item"target="_blank" href="/Campaign_Detail/RunProgram/@Model.IDCAMPAIGN">Chạy chương trình</a>
+
+        </div>
+    </div>
+</div>
+<div>
+    <hr />
+
+
+
+    <div id="Dashboard" class=" city">
+        <div class="box-container listdetail" style="display:flex">
+            <div class="nav-title" style="width:50%">
+                <table>
+                    @*<tr>
+                        <th><h2>@Html.DisplayFor(model => model.NAME)</h2></th>
+                    </tr>*@
+                    <tr>
+                        <th>Thời gian :</th>
+                        <td> @Html.DisplayFor(model => model.STARTDATE) - @Html.DisplayFor(model => model.EXPIREDDATE)</td>
+                    </tr>
+                    <tr>
+                        <th>Số người thắng giải :</th>
+                        <td> @Html.DisplayFor(model => model.WINNERS)</td>
+                    </tr>
+                    <tr>
+                        <th>Trạng thái :</th>
+                        @if (Model.STATUS == true)
+                        {
+                            <td>
+                                Chương trình đang chạy
+                            </td>
+
+                        }
+                        else if (Model.STATUS == false || Model.STATUS == null)
+                        {
+                            <td>
+                                Chương trình chưa bắt đầu
+                            </td>
+                        }
+                    </tr>
+
+                </table>
+
+            </div>
+            <div style="width:50%">
+                <div class="summary-recent nav-title">
+                    <table>
+                        <tr>
+                            <th>
+                                Usage summary
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>x</th>
+                            <td>x</td>
+                        </tr>
+                        <tr>
+                            <th>x</th>
+                            <td>x</td>
+                        </tr>
+
+                    </table>
+                </div>
+                <div class="summary-recent nav-title">
+                    <table>
+                        <tr>
+                            <th>
+                                Recent campaign changes
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>x</th>
+                            <td>x</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div id="chartContainer" style="height: 50%; width: 50%;"></div>
+                            </td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div id="Prize" class="content-table  city" style="display:none">
+
+        <div class="box-container " style="display: flex; min-height: 54px;">
+
+            <div style="width:80%">
+
+            </div>
+            <div>
+                <button class="btn-createprize" onclick="document.getElementById('myModal').style.display='block'">
+                    Thêm mới giải
+                </button>
+
+            </div>
+            <div>
+                <div id="myModal" class="modal">
+                    <table class="modal-content" style=" width: 40%;">
+                        <tr>
+                            <td colspan="2">
+                                <div style="display:flex">
+                                    <h4 style="padding:10px 20px;width:100%">Thêm giải thưởng</h4>
+                                    <button style="float: right; margin-right: 20px; padding: 0 10px; margin: 10px 20px 10px 0; font-size: x-large; border: none; border-radius: 4px; background-color: #4da896; color: white;" onclick="closeModal()" id="close1">&times;</button>
+
+                                </div>
+
+                            </td>
+                        </tr>
+                        @{Html.RenderAction("CreateDetail", "Campaign");}
+
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+        <div class="box-container listdetail ">
+            <table>
+                <tr>
+                    <th>Tên giải</th>
+                    <th style="text-align:center">Hình ảnh giải thưởng</th>
+                    <th>Tên quà</th>
+                    <th>Số lượng giải</th>
+                </tr>
+                @foreach (var item in Model.CAMPAIGN_DETAIL)
+                {
+
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PRIZE.NAME)
+                        </td>
+                        <td style="text-align:center">
+                            <img style="width:32px;height:32px" src="@item.GIFT.IMAGE" />
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.GIFT.NAME)
+                        </td>
+                        @if (@item.USAGELIMIT <= 0)
+                        {
+                            <td>
+                                đã hết phần thưởng (@Html.DisplayFor(modelItem => item.USAGELIMIT) )
+                            </td>
+                        }
+                        else
+                        {
+                            <td>
+                                @Html.DisplayFor(modelItem => item.USAGELIMIT)
+                            </td>
+
+                        }
+
+                        <td>
+                            <a href="/Campaign/DeleteGift/@item.IDDETAIL" class="btn-delete">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </table>
+
+        </div>
+    </div>
+
+    <div id="Joiner" class="content-table  city" style="display:none">
+        <div class="container" style="width:100%">
+            <button class="btn-program" onclick="document.getElementById('charitymodal').style.display='block'">chức năng mua số (Nestle)</button>
+            <button class="btn-program" id="addjoiner" onclick="document.getElementById('joinModal').style.display='block'">Thêm người tham dự</button>
+            <button class="btn-program" disabled id="" onclick="document.getElementById('charitynumbermodal').style.display='block'">Danh sách số được mua (Nestle)</button>
+
+            @*<button class="btn-program" onclick="ExportExcel()">
+                Xuất File Excel
+            </button>*@
+            <a href="/Campaign/DeleteJoiners/@Session["CAMPAIGN"]" class="btn-delete" style="float:right">
+                Xóa danh sách
+            </a>
+        </div>
+        <div class="box-container list-detail">
+            <table style="width:100%" id="table2excel">
+                <tr>
+                    <th>Mã NV</th>
+                    <th>Number</th>
+                    <th>Tên</th>
+                    <th>Email</th>
+                    <th>Địa chỉ</th>
+                    <th>Tổng : <span  id="total"></span></th>
+                </tr>
+                @foreach (var item in Model.JOINERs)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IDJOINER)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PHONE)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NAME)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EMAIL)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ADDRESS)
+                        </td>
+                    </tr>
+
+                }
+
+            </table>
+        </div>
+
+
+        <div id="charitymodal" class="modal" style="display:none">
+
+            @using (Html.BeginForm())
+            {
+                @*{@Html.AntiForgeryToken()*@
+
+                <table class="modal-content" style=" width: 40%;">
+                    <tr>
+                        <td>
+                            <h4 style="padding:10px 20px;">Nhập danh sách người tham dự</h4>
+                        </td>
+                        <td>
+                            <button style="float: right; margin-right: 20px; border: none; border-radius: 4px; background-color: #4da896; color:white; " onclick="closeModal()" id="close1">&times;</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align:center">
+                            <input class="charityinput" id="namecharity" type="text" placeholder="name">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align:center">
+                            <input class="charityinput" id="mincharity" type="number" placeholder="min-number">
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align:center">
+                            <input class="charityinput" id="maxcharity" type="number" placeholder="max-number">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align:center">
+                            <input class="charityinput" id="idcharity" type="text" placeholder="id">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align:center">
+                            <input class="charityinput" id="addresscharity" type="text" placeholder="address">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align:center">
+                            <button class="charityinput btn-program" onclick="updateCharity()" id="btncharity">submitCharity</button>
+                        </td>
+                    </tr>
+
+
+                </table>
+            }
+
+
+        </div>
+        <div id="charitynumbermodal" class="modal">
+            
+            
+        </div>
+        @using (Html.BeginForm("Upload", "Campaign", FormMethod.Post, new
+        {
+            enctype = "multipart/form-data"
+        }))
+        {
+
+            <div id="joinModal" class="modal">
+                @using (Html.BeginForm())
+                {
+                    <table class="modal-content" style=" width: 40%;">
+                        <tr>
+                            <td>
+                                <h4 style="padding:10px 20px;">Nhập danh sách người tham dự</h4>
+                            </td>
+                            <td>
+                                <button style="float: right; margin-right: 20px; border: none; border-radius: 4px; background-color: #4da896; color:white; " onclick="closeModal()" id="close1">&times;</button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <input type="file"
+                                       class="inputfile"
+                                       name="UploadedFileEx" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="submit"
+                                       name="Submit"
+                                       value="Submit" class="btn-program" />
+                            </td>
+                        </tr>
+
+
+                    </table>
+                }
+            </div>
+        }
+    </div>
+ 
+</div>
+  @section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script>
+    var totalRowCount = document.getElementById("table2excel").rows.length;
+    document.getElementById("total").innerHTML = totalRowCount-1;
+    function openCity(evt, cityName) {
+        var i, x, tablinks;
+        x = document.getElementsByClassName("city");
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablink");
+        for (i = 0; i < x.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace("active", "");
+        }
+        document.getElementById(cityName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+  
+</script>

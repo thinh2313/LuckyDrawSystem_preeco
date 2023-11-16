@@ -1,0 +1,1117 @@
+﻿﻿@model  IEnumerable<PreecoLuckyDraw.Models.CAMPAIGN_DETAIL>
+
+@{
+    ViewBag.Title = Session["NAME"];
+    Layout = "~/Views/Shared/_LayoutProgram.cshtml";
+}
+<style>
+      :root {
+          --pink-2: hsl(318, 100%, 68%);
+          --pink-border: hsl(333, 82%, 62%);
+          --pink-1: hsl(332, 96%, 54%);
+          --square-shadow: hsl(295, 89%, 77%);
+      }
+    #bg {
+        font-family: VifonNumber_font !important;
+    }
+    @@font-face{
+        font-family:VifonNumber_font;
+        src:url(/Assets/Fonts/Vifon_font/Montserrat-ExtraBold.ttf)
+    }
+      @@font-face {
+          font-family: Vifon_font;
+          src: url('/Assets/Fonts/Roboto-Black.ttf')
+      }
+
+      .modal-content-congrate {
+          padding-top: 5% !important;
+      }
+
+    .modal-content {
+        background-image: url(/Assets/img/bg.png);
+        display: flex;
+        flex-direction: column;
+        border-radius: 20px;
+        background-color: rgb(211, 229, 253);
+        border: 2px solid #ec6dac !important;
+    }
+
+      html {
+          overflow: hidden
+      }
+
+      #congrate {
+          font-family: Vifon_font;
+          background-image: url(/Assets/img/congrate_bg_vifon.png);
+      }
+
+      .congrate-content {
+          padding: 10px 10px 50px 48px !important
+      }
+
+      #iddetail {
+          z-index: 1051;
+          /*animation: shake 3s infinite;*/
+      }
+
+      .congraterow1 {
+          /*background: linear-gradient(to bottom, var(--pink-2), var(--pink-1));*/
+          font-size: 30px !important;
+          -webkit-background-clip: text;
+          font-weight: bold;
+          color: var(--pink-1);
+          text-shadow: 0px 4px 3px #ffffff;
+          text-transform: uppercase;
+          animation: congrate 2s infinite ease-out;
+          animation-delay: 1s;
+      }
+
+      .congraterow2 {
+          background: var(--pink-2);
+          font-size: 36px !important;
+          -webkit-background-clip: text;
+          font-weight: bold;
+          color: var(--pink-2);
+          text-shadow: 0px 4px 3px #ffffff;
+          text-transform: uppercase;
+          animation: congrate 2s infinite ease-out;
+          animation-delay: 1.5s;
+      }
+
+      option {
+          background: #f6adcd;
+          padding: 5px;
+      }
+
+          option ::selection {
+              background: var(--pink-border);
+              cursor: pointer
+          }
+
+      @@keyframes shake {
+          0% {
+              transform: rotate(-10deg)scale(1);
+          }
+
+          25% {
+              transform: rotate(0deg) scale(1.2);
+          }
+
+          50% {
+              transform: rotate(10deg)scale(1);
+          }
+
+          75% {
+              transform: rotate(0deg) scale(1.2)
+          }
+
+          100% {
+              transform: rotate(-10deg)scale(1)
+          }
+      }
+
+      .modal {
+          background-color: rgb(0 0 51 / 66%) !important;
+      }
+
+      .square {
+          background: -webkit-linear-gradient(#f29eee, var(--pink-1));
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          border: 2px solid white !important;
+          box-shadow: inset 0px 2px 17px 4px var(--square-shadow) !important;
+          text-shadow: 5px 0px 2px rgb(255 255 255 / 30%);
+      }
+
+      .bubble {
+          /*box-shadow: 0 5px 10px white;*/
+          padding: 5px 0;
+          color: white;
+          min-width: 250px;
+          margin: 10px 7px 0px 7px;
+          font-size: 26px;
+          border: 4px solid var(--pink-border);
+          border-radius: 50px;
+          background: linear-gradient(170deg, hsla(0, 0%, 100%, 1) 0%, hsla(333, 82%, 72%, 1) 100%);
+          text-shadow: 0 3px 3px #a9a8a8;
+          background-image: linear-gradient(to top left, var(--pink-2),transparent 35%, transparent 63%,white), linear-gradient(to top, var(--pink-2) 0%, hsl(300, 100%, 90%) 95%);
+      }
+
+      .table th {
+          /*background-image: linear-gradient(to top, #f99cc4 0%, #ffccff 90%);*/
+          background-image: linear-gradient(to top, var(--pink-2) 0%, hsl(300, 100%, 90%) 95%);
+      }
+
+      .table td {
+          border: 2px solid #ec6dac !important;
+          padding: 8px;
+      }
+
+      .table tr:nth-child(even) {
+          background-color: #f2f2f2;
+      }
+      /*
+    .table tr:hover {background-color: #ddd;}*/
+
+      .table th {
+          padding-top: 12px;
+          padding-bottom: 12px;
+          text-align: center;
+          color: #574e9b;
+      }
+
+      .close {
+          position: absolute;
+          top: 3px;
+          right: 20px;
+      }
+
+      .border_table {
+          border-right: #ec6dac solid 2px !important;
+          border-bottom: #ec6dac solid 2px !important;
+      }
+
+      #phaohoa_vifon {
+          display: none;
+      }
+
+      .image_pyro_vifon {
+          background-size: contain;
+          background-repeat: no-repeat;
+          /* background-attachment: fixed; */
+          background-position: center;
+          position: absolute;
+          animation-duration: 1.5s;
+          z-index: 5000;
+          animation-iteration-count: infinite;
+      }
+
+      #pyrovifon8 {
+          background-image: url(/Assets/img/firework1.png);
+          animation-name: fw8;
+          animation-delay: 2s;
+      }
+
+      #pyrovifon3 {
+          background-image: url(/Assets/img/firework2.png);
+          animation-name: fw3;
+          animation-delay: 0.5s;
+      }
+
+      #pyrovifon4 {
+          background-image: url(/Assets/img/firework1.png);
+          animation-name: fw4;
+          animation-delay: 1.25s;
+      }
+
+      #pyrovifon1 {
+          background-image: url(/Assets/img/firework2.png);
+          animation-name: fw1;
+          animation-delay: 2.75s;
+      }
+
+      #pyrovifon2 {
+          background-image: url(/Assets/img/firework3.png);
+          animation-name: fw2;
+          animation-delay: 2s;
+      }
+
+      #pyrovifon5 {
+          background-image: url(/Assets/img/firework2.png);
+          animation-name: fw5;
+          animation-delay: 2.75s;
+      }
+
+      #pyrovifon6 {
+          background-image: url(/Assets/img/firework3.png);
+          animation-name: fw6;
+          animation-delay: 2s;
+      }
+
+      #pyrovifon7 {
+          background-image: url(/Assets/img/firework3.png);
+          animation-name: fw7;
+          animation-delay: 2.5s;
+      }
+
+      #pyrovifon9 {
+          background-image: url(/Assets/img/firework2.png);
+          animation-name: fw9;
+          animation-delay: 4.5s;
+      }
+
+      #pyrovifon10 {
+          background-image: url(/Assets/img/firework3.png);
+          animation-name: fw10;
+          animation-delay: 4.5s;
+      }
+
+      #pyrovifon11 {
+          background-image: url(/Assets/img/firework2.png);
+          animation-name: fw11;
+          animation-delay: 2.75s;
+      }
+
+      #pyrovifon12 {
+          background-image: url(/Assets/img/firework1.png);
+          animation-name: fw12;
+          animation-delay: 1.25s;
+      }
+
+      #pyrovifon13 {
+          background-image: url(/Assets/img/firework3.png);
+          animation-name: fw13;
+          animation-delay: 4.5s;
+      }
+
+      #pyrovifon14 {
+          background-image: url(/Assets/img/firework2.png);
+          animation-name: fw1;
+          animation-delay: 3.75s;
+      }
+
+      #pyrovifon15 {
+          background-image: url(/Assets/img/firework3.png);
+          animation-name: fw2;
+          animation-delay: 2s;
+      }
+
+      #pyrovifon16 {
+          background-image: url(/Assets/img/firework2.png);
+          animation-name: fw5;
+          animation-delay: 0.5s;
+      }
+
+      #pyrovifon17 {
+          background-image: url(/Assets/img/firework3.png);
+          animation-name: fw6;
+          animation-delay: 2s;
+      }
+
+      #pyrovifon18 {
+          background-image: url(/Assets/img/firework2.png);
+          animation-name: fw1;
+          animation-delay: 1.75s;
+      }
+
+      #pyrovifon19 {
+          background-image: url(/Assets/img/firework3.png);
+          animation-name: fw2;
+          animation-delay: 2s;
+      }
+
+      #pyrovifon20 {
+          background-image: url(/Assets/img/firework2.png);
+          animation-name: fw5;
+          animation-delay: 1.75s;
+      }
+
+      #pyrovifon21 {
+          background-image: url(/Assets/img/firework3.png);
+          animation-name: fw6;
+          animation-delay: 2s;
+      }
+
+      #pyrovifon22 {
+          background-image: url(/Assets/img/firework3.png);
+          animation-name: fw6;
+          animation-delay: 1.25s;
+      }
+
+      #pyrovifon23 {
+          background-image: url(/Assets/img/firework2.png);
+          animation-name: fw5;
+          animation-delay: 1.75s;
+      }
+
+      #pyrovifon24 {
+          background-image: url(/Assets/img/firework3.png);
+          animation-name: fw6;
+          animation-delay: 2s;
+      }
+
+      @@keyframes fw1 {
+          0% {
+              width: 200px;
+              height: 200px;
+              left: 250px;
+              top: 0px;
+              opacity: 1;
+              scale: 0.5;
+          }
+
+          100% {
+              width: 200px;
+              height: 200px;
+              left: 250px;
+              top: 200px;
+              opacity: 0;
+              scale: 1.75
+          }
+      }
+
+      @@keyframes fw2 {
+          0% {
+              width: 200px;
+              height: 200px;
+              left: 600px;
+              top: 0px;
+              opacity: 1;
+              scale: 0.75;
+          }
+
+          100% {
+              width: 200px;
+              height: 200px;
+              left: 600px;
+              top: 200px;
+              opacity: 0;
+              scale: 1.75;
+          }
+      }
+
+      @@keyframes fw3 {
+          0% {
+              width: 200px;
+              height: 200px;
+              left: 100px;
+              top: 150px;
+              opacity: 1;
+              scale: 0.75;
+          }
+
+          100% {
+              width: 200px;
+              height: 200px;
+              left: 100px;
+              top: 350px;
+              opacity: 0;
+              scale: 1.75;
+          }
+      }
+
+      @@keyframes fw4 {
+          0% {
+              width: 200px;
+              height: 200px;
+              left: 450px;
+              top: 400px;
+              opacity: 1;
+              scale: 0.75;
+          }
+
+          100% {
+              width: 200px;
+              height: 200px;
+              left: 450px;
+              top: 600px;
+              opacity: 0;
+              scale: 1.75;
+          }
+      }
+
+      @@keyframes fw5 {
+          0% {
+              width: 200px;
+              height: 200px;
+              left: 650px;
+              top: 0px;
+              opacity: 1;
+              scale: 0.75;
+          }
+
+          100% {
+              width: 200px;
+              height: 200px;
+              left: 650px;
+              top: 200px;
+              opacity: 0;
+              scale: 1.75;
+          }
+      }
+
+      @@keyframes fw6 {
+          0% {
+              width: 200px;
+              height: 200px;
+              right: 300px;
+              top: 65px;
+              opacity: 1;
+              scale: 0.75;
+          }
+
+          100% {
+              width: 200px;
+              height: 200px;
+              right: 300px;
+              top: 265px;
+              opacity: 0;
+              scale: 1.75;
+          }
+      }
+
+      @@keyframes fw7 {
+          0% {
+              width: 200px;
+              height: 200px;
+              left: 700px;
+              top: 125px;
+              opacity: 1;
+              scale: 0.75;
+          }
+
+          100% {
+              width: 200px;
+              height: 200px;
+              left: 700px;
+              top: 325px;
+              opacity: 0;
+              scale: 1.75;
+          }
+      }
+
+      @@keyframes fw8 {
+          0% {
+              width: 200px;
+              height: 200px;
+              left: 500px;
+              top: 100px;
+              opacity: 1;
+              scale: 0.75;
+          }
+
+          100% {
+              width: 200px;
+              height: 200px;
+              left: 500px;
+              top: 300px;
+              opacity: 0;
+              scale: 1.75;
+          }
+      }
+
+      @@keyframes fw9 {
+          0% {
+              width: 200px;
+              height: 200px;
+              left: 800px;
+              top: 400px;
+              opacity: 1;
+              scale: 0.75;
+          }
+
+          100% {
+              width: 200px;
+              height: 200px;
+              left: 800px;
+              top: 600px;
+              opacity: 0;
+              scale: 1.75;
+          }
+      }
+
+      @@keyframes fw10 {
+          0% {
+              width: 200px;
+              height: 200px;
+              right: 250px;
+              top: 50px;
+              opacity: 1;
+              scale: 0.75;
+          }
+
+          100% {
+              width: 200px;
+              height: 200px;
+              right: 250px;
+              top: 250px;
+              opacity: 0;
+              scale: 1.75;
+          }
+      }
+
+      @@keyframes fw11 {
+          0% {
+              width: 200px;
+              height: 200px;
+              right: 400px;
+              top: 300px;
+              opacity: 1;
+              scale: 0.75;
+          }
+
+          100% {
+              width: 200px;
+              height: 200px;
+              right: 400px;
+              top: 500px;
+              opacity: 0;
+              scale: 1.75;
+          }
+      }
+
+      @@keyframes fw12 {
+          0% {
+              width: 200px;
+              height: 200px;
+              right: 250px;
+              top: 500px;
+              opacity: 1;
+              scale: 0.75;
+          }
+
+          100% {
+              width: 200px;
+              height: 200px;
+              right: 250px;
+              top: 700px;
+              opacity: 0;
+              scale: 1.75;
+          }
+      }
+
+      @@keyframes fw13 {
+          0% {
+              width: 200px;
+              height: 200px;
+              right: 550px;
+              top: 100px;
+              opacity: 1;
+              scale: 0.75;
+          }
+
+          100% {
+              width: 200px;
+              height: 200px;
+              right: 750px;
+              top: 300px;
+              opacity: 0;
+              scale: 1.75;
+          }
+      }
+
+      @@keyframes fw14 {
+          0% {
+              width: 200px;
+              height: 200px;
+              left: 250px;
+              top: 0px;
+              opacity: 1;
+              scale: 0.5;
+          }
+
+          100% {
+              width: 200px;
+              height: 200px;
+              left: 250px;
+              top: 200px;
+              opacity: 0;
+              scale: 1.75
+          }
+      }
+
+      @@keyframes fw15 {
+          0% {
+              width: 200px;
+              height: 200px;
+              left: 600px;
+              top: 0px;
+              opacity: 1;
+              scale: 0.75;
+          }
+
+          100% {
+              width: 200px;
+              height: 200px;
+              left: 600px;
+              top: 200px;
+              opacity: 0;
+              scale: 1.75;
+          }
+      }
+
+      @@keyframes fw16 {
+          0% {
+              width: 200px;
+              height: 200px;
+              left: 100px;
+              top: 150px;
+              opacity: 1;
+              scale: 0.75;
+          }
+
+          100% {
+              width: 200px;
+              height: 200px;
+              left: 100px;
+              top: 350px;
+              opacity: 0;
+              scale: 1.75;
+          }
+      }
+
+      @@keyframes fw17 {
+          0% {
+              width: 200px;
+              height: 200px;
+              left: 450px;
+              top: 400px;
+              opacity: 1;
+              scale: 0.75;
+          }
+
+          100% {
+              width: 200px;
+              height: 200px;
+              left: 450px;
+              top: 600px;
+              opacity: 0;
+              scale: 1.75;
+          }
+      }
+
+      @@keyframes fw18 {
+          0% {
+              width: 200px;
+              height: 200px;
+              left: 500px;
+              top: 100px;
+              opacity: 1;
+              scale: 0.75;
+          }
+
+          100% {
+              width: 200px;
+              height: 200px;
+              left: 500px;
+              top: 300px;
+              opacity: 0;
+              scale: 1.75;
+          }
+      }
+
+      @@keyframes fw19 {
+          0% {
+              width: 200px;
+              height: 200px;
+              left: 800px;
+              top: 400px;
+              opacity: 1;
+              scale: 0.75;
+          }
+
+          100% {
+              width: 200px;
+              height: 200px;
+              left: 800px;
+              top: 600px;
+              opacity: 0;
+              scale: 1.75;
+          }
+      }
+
+      @@keyframes fw20 {
+          0% {
+              width: 200px;
+              height: 200px;
+              right: 250px;
+              top: 50px;
+              opacity: 1;
+              scale: 0.75;
+          }
+
+          100% {
+              width: 200px;
+              height: 200px;
+              right: 250px;
+              top: 250px;
+              opacity: 0;
+              scale: 1.75;
+          }
+      }
+
+      @@keyframes fw21 {
+          0% {
+              width: 200px;
+              height: 200px;
+              right: 400px;
+              top: 300px;
+              opacity: 1;
+              scale: 0.75;
+          }
+
+          100% {
+              width: 200px;
+              height: 200px;
+              right: 400px;
+              top: 500px;
+              opacity: 0;
+              scale: 1.75;
+          }
+      }
+
+      @@keyframes fw22 {
+          0% {
+              width: 200px;
+              height: 200px;
+              right: 250px;
+              top: 500px;
+              opacity: 1;
+              scale: 0.75;
+          }
+
+          100% {
+              width: 200px;
+              height: 200px;
+              right: 250px;
+              top: 700px;
+              opacity: 0;
+              scale: 1.75;
+          }
+      }
+
+      @@keyframes fw23 {
+          0% {
+              width: 200px;
+              height: 200px;
+              right: 500px;
+              top: 450px;
+              opacity: 1;
+              scale: 0.75;
+          }
+
+          100% {
+              width: 200px;
+              height: 200px;
+              right: 500px;
+              top: 650px;
+              opacity: 0;
+              scale: 1.75;
+          }
+      }
+
+      @@keyframes fw24 {
+          0% {
+              width: 200px;
+              height: 200px;
+              left: 500px;
+              top: 500px;
+              opacity: 1;
+              scale: 0.75;
+          }
+
+          100% {
+              width: 200px;
+              height: 200px;
+              left: 500px;
+              top: 700px;
+              opacity: 0;
+              scale: 1.75;
+          }
+      }
+
+      .modal-content {
+      }
+
+      tr {
+          background: transparent !important;
+      }
+
+      .btn_table {
+          font-size: 14px !important;
+          min-width: 170px !important;
+          margin: 0px 7px 7px 7px;
+      }
+
+      .number {
+          padding-top: 70px !important;
+      }
+</style>
+<link href="~/Assets/css/styles.css" rel="stylesheet" />
+
+<audio id="drawAudio" loop>
+    <source src="~/Assets/img/spin.mp3" type="audio/mp3">
+    sound quay so
+</audio>
+<audio id="congraAudio" loop>
+    <source src="~/Assets/img/phaohoa.mp3" type="audio/mp3">
+    sound congratulation
+</audio>
+@*<div id="phaohoa" class="pyro">
+        <div class="before"></div>
+        <div class="after"></div>
+    </div>*@
+<div id="phaohoa_vifon">
+    <div class="image_pyro_vifon" id="pyrovifon1"></div>
+    <div class="image_pyro_vifon" id="pyrovifon2"></div>
+    <div class="image_pyro_vifon" id="pyrovifon3"></div>
+    <div class="image_pyro_vifon" id="pyrovifon4"></div>
+    <div class="image_pyro_vifon" id="pyrovifon5"></div>
+    <div class="image_pyro_vifon" id="pyrovifon6"></div>
+    <div class="image_pyro_vifon" id="pyrovifon7"></div>
+    <div class="image_pyro_vifon" id="pyrovifon8"></div>
+    <div class="image_pyro_vifon" id="pyrovifon9"></div>
+    <div class="image_pyro_vifon" id="pyrovifon10"></div>
+    <div class="image_pyro_vifon" id="pyrovifon11"></div>
+    <div class="image_pyro_vifon" id="pyrovifon12"></div>
+    <div class="image_pyro_vifon" id="pyrovifon13"></div>
+    <div class="image_pyro_vifon" id="pyrovifon14"></div>
+    <div class="image_pyro_vifon" id="pyrovifon15"></div>
+    <div class="image_pyro_vifon" id="pyrovifon16"></div>
+    <div class="image_pyro_vifon" id="pyrovifon17"></div>
+    <div class="image_pyro_vifon" id="pyrovifon18"></div>
+    <div class="image_pyro_vifon" id="pyrovifon19"></div>
+    <div class="image_pyro_vifon" id="pyrovifon20"></div>
+    <div class="image_pyro_vifon" id="pyrovifon21"></div>
+    <div class="image_pyro_vifon" id="pyrovifon22"></div>
+
+
+
+</div>
+<div style="display: grid;">
+    <!--title-->
+    <div id="logoImage">
+        <img id="logo" />
+    </div>
+    <div class="container_title">
+        @*@if ((string)Session["NAME"] == "VIFON - Vòng Quay May Mắn")
+            {<div id="titlename" class="title" onclick="showhideTitle_vifon()">
+
+                    <abbr id="titlecampaignvifon" title="Nhấp để thay đổi">
+                        @Session["NAME"]
+                    </abbr>
+                </div>
+            }
+            else
+            {
+                <div id="titlename" class="title">
+                    <abbr id="titlecampaign" title="Nhấp để thay đổi" onclick="showhideTitle()">
+                        @Session["NAME"]
+                    </abbr>
+                </div>
+            }*@
+    </div>
+</div>
+<!--number-->
+<div class="number">
+    <div class="box1" style="height: fit-content;">
+        <div style="flex-wrap: nowrap; display: flex; justify-content: center">
+            <button class="square" id="0" disabled></button>
+            <button class="square" id="1" disabled></button>
+            <button class="square" id="2" disabled></button>
+            <button class="square" id="3" disabled></button>
+            <button class="square" id="4" disabled></button>
+            <button class="square" id="5" disabled></button>
+            <button class="square" id="6" disabled></button>
+            <button class="square" id="7" disabled></button>
+            <button class="square" id="8" disabled></button>
+            @*<button class="square" id="9" disabled></button>*@
+        </div>
+    </div>
+</div>
+<!--status-->
+<div class="flex_center">
+    <div class="box"></div>
+    <div class="box1" style="text-align:center">
+        <p id="status" onclick="showhide_input()">
+            Tìm người đoạt giải
+        </p>
+        <div style="display:flex;justify-content:center">
+            @if (Session["check"] == null)
+            {<div class="input-group">
+
+                    <p>Chưa có giải thưởng . Hãy <a href="/Campaign/Details/@Session["IDCAMPAIGN"]">thêm giải</a> vào chương trình</p>
+                </div>
+            }
+            else
+            {
+                Html.RenderAction("SelectPrizeCamp", "Campaign_Detail");
+
+                <button id="startDraw" class="bubble" onclick="startDrawVifon()">QUAY</button>
+                <button id="submit" class="bubble" style="display:none" onclick="RunVifon()">DỪNG</button>
+                <button id="myBtn" class="bubble" onclick="Export()">KẾT QUẢ</button>
+            }
+
+        </div>
+
+
+
+    </div>
+
+</div>
+<!-- The Modal -->
+
+<div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content" style="scale:2;width:40%">
+        <div>
+            <span class="close" id="close" onclick="clear_table()">&times;</span>
+        </div>
+        <table class="table" id="table2excel" style="  ">
+            <thead>
+                <tr>
+                    <th class="border_table" scope="col" style="border-radius: 20px 0 0 0;">GIẢI</th>
+                    <th class="border_table" scope="col">SĐT</th>
+                    <th class="border_table">MÃ TRÚNG THƯỞNG</th>
+                    <th style="
+                    border-radius: 0 20px 0 0;
+                    border-bottom: #ec6dac solid 2px;">NGÀY ĐOẠT GIẢI</th>
+                </tr>
+            </thead>
+            <tbody id="result">
+                <!-- <tr></tr> -->
+            </tbody>
+
+        </table>
+        @*<button id="btnSave" class="btn-run" onclick="saveWinner()">Lưu</button>
+
+            <button class="btn-run" onclick="ExportExcel()">
+                Xuất File Excel
+
+            </button>*@
+        <div style="display:flex;justify-content:center;align-items:center">
+            <button id="btnSave" class="bubble btn_table" onclick="saveWinner()">Lưu</button>
+
+            <button class="bubble btn_table" onclick="ExportExcel()">Kết quả </button>
+        </div>
+    </div>
+</div>
+<div class="container " style="display: flex; justify-content: center; padding-top: 70px">
+    <div class="prize_mobile" style="display:flex;justify-content:center">
+        <iframe id="iddetail" height="350" width="550" title="Iframe Example" style="border:none">
+        </iframe>
+    </div>
+</div>
+<div id="modal-congrate" class="modal">
+    <div class="modal-content-congrate">
+        <div id="congrate">
+        </div>
+    </div>
+</div>
+<div>
+    @{ Html.RenderAction("listJoiners", "Campaign"); }
+</div>
+
+<div style="display:none">
+    <input value="@Session["BACKGROUND"]" id="BACKGROUND"></>
+    <input value="@Session["COLORBG"]" id="COLORBG"></>
+    <input value="@Session["COLORTEXT"]" id="COLORTEXT"></>
+    <input value="@Session["COLORBTN_BG"]" id="COLORBTN_BG"></>
+    <input value="@Session["COLORBTN_TEXT"]" id="COLORBTN_TEXT"></>
+    <input value="@Session["LOGO"]" id="LOGO"></>
+    <input value="@Session["NAME"]" id="nameCamp"></>
+    <input value="@Session["NAMECUS"]" id="nameCus"></>
+    <input value="@Session["IDCAMPAIGN"]" id="IDCAMPAIGN"></>
+</div>
+<script src="~/Assets/js/Script.js"></script>
+<script>
+    function clear_table() {
+        //const btn = document.getElementById("close");
+        document.getElementById("result").remove();
+    }
+
+    //--------------------Giao dien ->
+    const bg = document.getElementById("bg");
+    const logo = document.getElementById("logo");
+    const btnrun = document.getElementById("myBtn").style;
+    const BACKGROUND = document.getElementById("BACKGROUND").value;
+    const COLORBG = document.getElementById("COLORBG").value;
+    const COLORTEXT = document.getElementById("COLORTEXT").value;
+    const COLORBTN_BG = document.getElementById("COLORBTN_BG").value;
+    const COLORBTN_TEXT = document.getElementById("COLORBTN_TEXT").value;
+    const LOGO = document.getElementById("LOGO").value;
+    const IDCAMPAIGN = document.getElementById("IDCAMPAIGN").value;
+    bg.style.backgroundImage = 'url(' + BACKGROUND + ')';
+    console.log(LOGO)
+    if (LOGO == "/Assets/img/preeco.png") {
+        logo.style.display = "none";
+    }
+    else {
+        logo.src = LOGO;
+    }
+    const btnSubmit = document.getElementById("startDraw").style;
+    const btnselect = document.getElementById("IDDETAIL").style;
+    const btnStop = document.getElementById("submit").style;
+    //btnStop.color = COLORBTN_TEXT; btnStop.backgroundColor = COLORBTN_BG;
+    //btnSubmit.color = COLORBTN_TEXT; btnSubmit.backgroundColor = COLORBTN_BG;
+    //btnselect.color = COLORBTN_BG; btnselect.backgroundColor = COLORBTN_TEXT;
+    //btnrun.color = COLORBTN_TEXT; btnrun.backgroundColor = COLORBTN_BG;
+    const square0 = document.getElementById("0").style;
+    const square1 = document.getElementById("1").style;
+    const square2 = document.getElementById("2").style;
+    const square3 = document.getElementById("3").style;
+    const square4 = document.getElementById("4").style;
+    const square5 = document.getElementById("5").style;
+    const square6 = document.getElementById("6").style;
+    const square7 = document.getElementById("7").style;
+    const square8 = document.getElementById("8").style;
+    //const square9 = document.getElementById("9").style;
+    square0.color = COLORTEXT; square0.backgroundColor = COLORBG;
+    square1.color = COLORTEXT; square1.backgroundColor = COLORBG;
+    square2.color = COLORTEXT; square2.backgroundColor = COLORBG;
+    square3.color = COLORTEXT; square3.backgroundColor = COLORBG;
+    square4.color = COLORTEXT; square4.backgroundColor = COLORBG;
+    square5.color = COLORTEXT; square5.backgroundColor = COLORBG;
+    square6.color = COLORTEXT; square6.backgroundColor = COLORBG;
+    square7.color = COLORTEXT; square7.backgroundColor = COLORBG;
+    square8.color = COLORTEXT; square8.backgroundColor = COLORBG;
+    //square9.color = COLORTEXT; square9.backgroundColor = COLORBG;
+
+    //--------------------Giao dien <-
+
+
+
+    function chosse() {
+        var imgprize = document.getElementById("iddetail");
+        var IDitemprize = $("#IDDETAIL option:selected").val();
+        if (IDitemprize == null || IDitemprize == "--Chọn giải--" || IDitemprize == " ") {
+            imgprize.style.display = "none";
+        }
+        imgprize.style.display = "block";
+        if (imgprize == null) {
+        }
+        imgprize.src = " /Campaign_detail/Detail/" + IDitemprize;
+
+    }
+    function saveWinner() {
+        var winners = new Array();
+        $("#table2excel tbody tr").each(function () {
+            var row = $(this);
+            var winner = {};
+            winner.NAME = row.find("TD").eq(1).html();
+            winner.PHONE = row.find("TD").eq(2).html();
+            winner.WINDATE = row.find("TD").eq(3).html();
+            winner.IDDETAIL = row.find("TD").eq(4).html();
+            winner.IDCAMP = IDCAMPAIGN;
+            winners.push(winner);
+        });
+        $.ajax({
+            type: "POST",
+            url: '/Winner/UpdateWinner',
+            data: JSON.stringify(winners),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (r) {
+                console.log("success : ")
+            },
+            error: function (r) {
+                console.log("have save error")
+            }
+        });
+    };
+    function showhide_input() {
+        var iddetail = document.getElementById("IDDETAIL");
+        var btn_kq = document.getElementById("myBtn");
+
+        if (btn_kq.style.display == "none") {
+            iddetail.style.display = "block";
+            btn_kq.style.display = "block";
+        }
+        else {
+            iddetail.style.display = "none";
+            btn_kq.style.display = "none";
+        }
+
+    }
+</script>

@@ -1,0 +1,159 @@
+﻿@model IEnumerable<PreecoLuckyDraw.Models.USER>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="content-table">
+    <div style="display:flex">
+        <h2 class=" title-header" style="width: 95% ">TÀI KHOẢN</h2>
+        <h2 style="float: right">
+            <a href="/Users/Create" class="btn-create">+</a>
+        </h2>
+
+    </div>
+    @if ((int)Session["STATUS"] == 2313)
+    {
+        <div style="display: flex; align-items: center; justify-content: center;">
+            <p>
+                <button class="btn-program" onclick="showHistory()">storyLog</button>
+
+            </p>
+
+        </div>
+    }
+    <div id="myModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div>
+                <span class="close">&times;</span>
+            </div>
+            <div id="demoHis">
+            </div>
+            <button class="btn-delete" onclick="deleteHistory()">Delete Log</button>
+
+        </div>
+    </div>
+    <div class="box-container">
+        <table class="table">
+            <tr>
+                <th>
+                    Tên
+                </th>
+                <th>
+                    Ngày sinh
+                </th>
+                <th>
+                    Số điện thoại
+                </th>
+                <th>
+                    Trạng thái
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NAME)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DATEOFBIRTH)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PHONE)
+                    </td>
+                    @if (item.STATUSS == null || item.STATUSS == 3)
+                    {
+                        <td>Khách thường</td>
+                        if ((int)Session["STATUS"] == 2313)
+                        {
+                            <td>
+                                <a href="/Users/Edit/@item.ID" class="btn-program">Cập nhật</a>
+
+                                <span> | </span>
+                                <a href="/Users/DeleteConfirmed/@item.ID" class="btn-delete">Xóa</a>
+                                
+                            </td>
+                        }
+                    }
+                    else
+                    {
+                        if (item.STATUSS == 2313)
+                        {
+                                <td style="color:gold">admin</td>
+                            }
+                            if (item.STATUSS == 1)
+                            {
+                                <td style="color:red">Quản lý</td>
+                                <td>
+                                    <a href="/Users/Edit/@item.ID" class="btn-program">Cập nhật</a>
+                                    @if ((int)Session["STATUS"] == 2313)
+                                    {
+                                        <span> | </span>
+                                        <a href="/Users/DeleteConfirmed/@item.ID" class="btn-delete">Xóa</a>
+                                    }
+                                </td>
+                            }
+
+                            if (item.STATUSS == 2)
+                            {
+                                <td style="color: #4da896">Khách nâng cao</td>
+                                <td>
+                                    <a href="/Users/Edit/@item.ID" class="btn-program">Cập nhật</a>
+                                    @if ((int)Session["STATUS"] == 2313)
+                                    {
+                                        <span> | </span>
+                                        <a href="/Users/DeleteConfirmed/@item.ID" class="btn-delete">Xóa</a>
+                                    }
+                                </td>
+                            }
+
+                        }
+
+
+                        <td>
+                        </td>
+                    </tr>
+            }
+
+        </table>
+    </div>
+    <script>
+        var modal = document.getElementById("myModal");
+
+        function showHistory() {
+            modal.style.display = "block";
+            const HistoryDraw = localStorage.getItem("HistoryDraw");
+            const HistoryDrawHadStop = localStorage.getItem("HistoryDrawHadStop");
+            const HistoryDrawName = localStorage.getItem("HistoryDrawName");
+            his_list = HistoryDraw + HistoryDrawHadStop + HistoryDrawName;
+            document.getElementById("demoHis").innerHTML = his_list.replaceAll(",", "");
+        }
+        function deleteHistory() {
+            localStorage.clear();
+            location.reload()
+        }
+        // Modal
+        var span = document.getElementsByClassName("close")[0];
+        // When the user clicks the button, open the modal
+
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+            if (document.getElementById("modal-congrate")) {
+                document.getElementById("modal-congrate").style.display = "none";
+
+            }
+        }
+// When the user clicks anywhere outside of the modal, close it
+    </script>
+</div>

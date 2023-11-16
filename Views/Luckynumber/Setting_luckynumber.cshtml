@@ -1,0 +1,73 @@
+﻿@model IEnumerable<PreecoLuckyDraw.Models.LUCKYNUMBER>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Setting_luckynumber</title>
+</head>
+<body>
+   
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NUMB)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CONTENTS)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IMAGE)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.STATUS)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NOTE)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NUMB)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CONTENTS)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IMAGE)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.STATUS)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NOTE)
+                </td>
+            </tr>
+        }
+
+    </table>
+    @using (Html.BeginForm("UploadLuckynumber", "Luckynumber", FormMethod.Post, new
+    {
+        enctype = "multipart/form-data"
+    }))
+    {
+        <input type="file"
+               class="inputfile btn-outline-secondary"
+               name="UploadedFileEx" />
+        <input type="submit"
+               name="Submit"
+               value="Submit" class="btn-success" />
+    }
+    <a href="/Luckynumber/clearluckynumber" class="btn-danger">Xóa</a>
+
+</body>
+</html>

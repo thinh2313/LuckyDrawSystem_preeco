@@ -1,0 +1,59 @@
+﻿@model IEnumerable<PreecoLuckyDraw.Models.GIFT>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="content-table">
+    <div style="display:flex" >
+        <h2 class="title-header" style="width: 95% ">QUÀ</h2>
+
+        <h2 style="float: right; ">
+            <a href="/Gift/Create" class="btn-create">+</a>
+
+        </h2>
+    </div>
+
+    <div class="box-container">
+
+        <table class="table">
+            <tr>
+                <th>
+                    Tên quà
+                </th>
+                <th style="text-align:center">
+                    Hình ảnh
+                </th>
+                <th>
+                    Ngày tạo
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NAME)
+                    </td>
+                    <td style="text-align:center">
+                        <img style="width:32px;height:32px;border-radius:4px" src="@item.IMAGE" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CREATEDATE)
+                    </td>
+                    @if ((int)Session["STATUS"] == 1 || (int)Session["STATUS"] == 2313)
+                    {
+                        <td class="gr-btn-campaign" style=" display: flex;flex-wrap: wrap;">
+
+                            <a href="/Gift/Edit/@item.IDGIFT" class="btn-program">Sửa</a>
+                            <span class="wall">|</span>
+                            <a href="/Gift/Delete/@item.IDGIFT" class="btn-delete">Xóa</a>
+                        </td>
+                      }
+                    </tr>
+            }
+
+        </table>
+    </div>
+</div>
